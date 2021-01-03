@@ -393,8 +393,8 @@ exports.defineManualTests = function (contentEl, createActionButton) {
             picture:'https://www.google.co.jp/logos/doodles/2014/doodle-4-google-2014-japan-winner-5109465267306496.2-hp.png',
             name:'Test Post',
             message:'First photo post',    
-            caption: 'Testing using phonegap plugin',
-            description: 'Posting photo using phonegap facebook plugin'
+            caption: 'Testing using Cordova plugin',
+            description: 'Posting photo using Cordova Facebook plugin'
         };
         
         function  onSuccess (result) {
