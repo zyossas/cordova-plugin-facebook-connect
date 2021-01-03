@@ -28,7 +28,7 @@ $ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="1
 
 ## Change Facebook JavaScript SDK version (defaults to v9.0)
 ```sh
-$ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="123456789" --variable APP_NAME="myApplication" --variable FACEBOOK_BROWSER_SDK_VERSION="8.0"
+$ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="123456789" --variable APP_NAME="myApplication" --variable FACEBOOK_BROWSER_SDK_VERSION="v8.0"
 ```
 
 ## Setup
