@@ -20,8 +20,8 @@ if(process.argv.join("|").indexOf("APP_ID=") > -1) {
 }
 
 var files = [
-    "platforms/browser/www/plugins/cordova-plugin-facebook4/www/facebook-browser.js",
-    "platforms/browser/platform_www/plugins/cordova-plugin-facebook4/www/facebook-browser.js",
+    "platforms/browser/www/plugins/cordova-plugin-facebook-connect/www/facebook-browser.js",
+    "platforms/browser/platform_www/plugins/cordova-plugin-facebook-connect/www/facebook-browser.js",
     "platforms/browser/www/cordova.js",
     "platforms/browser/platform_www/cordova.js"
 ]
