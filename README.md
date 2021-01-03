@@ -1,12 +1,6 @@
-# cordova-plugin-facebook4
+# cordova-plugin-facebook-connect
 
 > Use Facebook SDK in Cordova projects
-
-# Important Notice
-
-This plugin is not actively maintained anymore since March 2019.
-
-If you are interested to become a maintainer or have an active fork to share, please comment [#629](https://github.com/jeduan/cordova-plugin-facebook4/issues/629). 
 
 ## Table of contents
 
@@ -19,12 +13,12 @@ If you are interested to become a maintainer or have an active fork to share, pl
 
 ## Installation
 
-See npm package for versions - https://www.npmjs.com/package/cordova-plugin-facebook4
+See npm package for versions - https://www.npmjs.com/package/cordova-plugin-facebook-connect
 
 Make sure you've registered your Facebook app with Facebook and have an `APP_ID` [https://developers.facebook.com/apps](https://developers.facebook.com/apps).
 
 ```bash
-$ cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="123456789" --variable APP_NAME="myApplication"
+$ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="123456789" --variable APP_NAME="myApplication"
 ```
 
 If you need to change your `APP_ID` after installation, it's recommended that you remove and then re-add the plugin as above. Note that changes to the `APP_ID` value in your `config.xml` file will *not* be propagated to the individual platform builds.
@@ -57,7 +51,6 @@ If you are looking to test the plugin, would like to reproduce a bug or build is
   * cordova-android >= 4.0
   * cordova-ios >= 3.8
   * cordova-browser >= 3.6
-  * Phonegap build (use phonegap-version >= cli-5.2.0, android-minSdkVersion>=15, and android-build-tool=gradle), see [example here](https://github.com/yoav-zibin/phonegap-tictactoe/blob/gh-pages/www/config.xml)
 
 ## Facebook SDK
 
@@ -335,8 +328,8 @@ facebookConnectPlugin.showDialog({
     picture:'https://www.google.co.jp/logos/doodles/2014/doodle-4-google-2014-japan-winner-5109465267306496.2-hp.png',
     name:'Test Post',
     message:'First photo post',
-    caption: 'Testing using phonegap plugin',
-    description: 'Posting photo using phonegap facebook plugin'
+    caption: 'Testing using Cordova plugin',
+    description: 'Posting photo using Cordova Facebook plugin'
   }, function (response) {
     console.log(response)
   }, function (response) {
@@ -351,8 +344,8 @@ Starting from Facebook SDK v4.34 for both iOS and Android, there is a new way of
 
 In order to enable this feature in your cordova app, please set the *FACEBOOK_HYBRID_APP_EVENTS* variable to "true"(default is false):
 ```bash
-$ cordova plugin add cordova-plugin-facebook4 --save --variable APP_ID="123456789" --variable APP_NAME="myApplication" --variable FACEBOOK_HYBRID_APP_EVENTS="true"
+$ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="123456789" --variable APP_NAME="myApplication" --variable FACEBOOK_HYBRID_APP_EVENTS="true"
 ```
 Please check [this repo](https://github.com/msencer/fb_hybrid_app_events_sample) for an example app using this feature.
 
-**NOTE(iOS):** This feature only works with WKWebView so until [Cordova iOS 5 is relased](https://cordova.apache.org/news/2018/08/01/future-cordova-ios-webview.html), an additional plugin (e.g cordova-plugin-wkwebview-engine) is needed.
+**NOTE(iOS):** This feature only works with WKWebView so if using an old version of Cordova, an additional plugin (e.g cordova-plugin-wkwebview-engine) is needed.
