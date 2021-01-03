@@ -12,18 +12,39 @@ var getPreferenceValue = function(config, name) {
     }
 }
 
-if(process.argv.join("|").indexOf("APP_ID=") > -1) {
-	var APP_ID = process.argv.join("|").match(/APP_ID=(.*?)(\||$)/)[1]
-} else {
-	var config = fs.readFileSync("config.xml").toString()
-	var APP_ID = getPreferenceValue(config, "APP_ID")
+var getPreferenceValueFromPackageJson = function (config, name) {
+    var value = config.match(new RegExp('"' + name + '":\\s"(.*?)"', "i"))
+    if(value && value[1]) {
+        return value[1]
+    } else {
+        return null
+    }
 }
 
-if(process.argv.join("|").indexOf("FACEBOOK_BROWSER_SDK_VERSION=") > -1) {
-	var FACEBOOK_BROWSER_SDK_VERSION = process.argv.join("|").match(/FACEBOOK_BROWSER_SDK_VERSION=(.*?)(\||$)/)[1]
+var APP_ID = ''
+
+if(process.argv.join("|").indexOf("APP_ID=") > -1) {
+	APP_ID = process.argv.join("|").match(/APP_ID=(.*?)(\||$)/)[1]
 } else {
 	var config = fs.readFileSync("config.xml").toString()
-	var FACEBOOK_BROWSER_SDK_VERSION = getPreferenceValue(config, "FACEBOOK_BROWSER_SDK_VERSION")
+	APP_ID = getPreferenceValue(config, "APP_ID")
+  if(!APP_ID) {
+    var packageJson = fs.readFileSync("package.json").toString()
+    APP_ID = getPreferenceValueFromPackageJson(packageJson, "APP_ID")
+  }
+}
+
+var FACEBOOK_BROWSER_SDK_VERSION = ''
+
+if(process.argv.join("|").indexOf("FACEBOOK_BROWSER_SDK_VERSION=") > -1) {
+	FACEBOOK_BROWSER_SDK_VERSION = process.argv.join("|").match(/FACEBOOK_BROWSER_SDK_VERSION=(.*?)(\||$)/)[1]
+} else {
+	var config = fs.readFileSync("config.xml").toString()
+	FACEBOOK_BROWSER_SDK_VERSION = getPreferenceValue(config, "FACEBOOK_BROWSER_SDK_VERSION")
+  if(!FACEBOOK_BROWSER_SDK_VERSION) {
+    var packageJson = fs.readFileSync("package.json").toString()
+    FACEBOOK_BROWSER_SDK_VERSION = getPreferenceValueFromPackageJson(packageJson, "FACEBOOK_BROWSER_SDK_VERSION")
+  }
 }
 
 var files = [
