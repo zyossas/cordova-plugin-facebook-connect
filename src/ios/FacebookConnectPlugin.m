@@ -40,6 +40,10 @@
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationDidBecomeActive:)
                                                  name:UIApplicationDidBecomeActiveNotification object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                         selector:@selector(handleOpenURLWithAppSourceAndAnnotation:) 
+                                             name:CDVPluginHandleOpenURLWithAppSourceAndAnnotationNotification object:nil];
 }
 
 - (void) applicationDidFinishLaunching:(NSNotification *) notification {
@@ -58,6 +62,13 @@
         self.applicationWasActivated = YES;
         [self enableHybridAppEvents];
     }
+}
+
+- (void) handleOpenURLWithAppSourceAndAnnotation:(NSNotification *) notification {
+    NSMutableDictionary * options = [notification object];
+    NSURL* url = options[@"url"];
+
+    [[FBSDKApplicationDelegate sharedInstance] application:[UIApplication sharedApplication] openURL:url options:options];
 }
 
 #pragma mark - Cordova commands
@@ -307,41 +318,6 @@
         }
 
         [dialog show];
-        return;
-    }
-    else if ( [method isEqualToString:@"share_open_graph"] ) {
-        if(!params[@"action"] || !params[@"object"]) {
-            NSLog(@"No action or object defined");
-            return;
-        }
-
-        //Get object JSON
-        NSError *jsonError;
-        NSData *objectData = [params[@"object"] dataUsingEncoding:NSUTF8StringEncoding];
-        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:objectData
-                                                             options:NSJSONReadingMutableContainers
-                                                               error:&jsonError];
-
-        if(jsonError) {
-            NSLog(@"There was an error parsing your 'object' JSON string");
-        } else {
-            FBSDKShareOpenGraphObject *object = [FBSDKShareOpenGraphObject objectWithProperties:json];
-            if(!json[@"og:type"]) {
-                NSLog(@"No 'og:type' encountered in the object JSON. Please provide an Open Graph object type.");
-                return;
-            }
-            NSString *objectType = json[@"og:type"];
-            objectType = [objectType stringByReplacingOccurrencesOfString:@"."
-                                                               withString:@":"];
-            FBSDKShareOpenGraphAction *action = [FBSDKShareOpenGraphAction actionWithType:params[@"action"] object:object key:objectType];
-
-            FBSDKShareOpenGraphContent *content = [[FBSDKShareOpenGraphContent alloc] init];
-            content.action = action;
-            content.previewPropertyName = objectType;
-            [FBSDKShareDialog showFromViewController:self.topMostController
-                                         withContent:content
-                                            delegate:nil];
-        }
         return;
     }
     else if ([method isEqualToString:@"apprequests"]) {
