@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
-        id="cordova-plugin-facebook4"
-        version="6.4.0">
+        id="cordova-plugin-facebook-connect"
+        version="1.0.0">
 
     <name>Facebook Connect</name>
 
     <description>
-      This is the official plugin for Facebook in Apache Cordova/PhoneGap!
+      This is the official plugin for Facebook in Apache Cordova!
 
       The Facebook plugin for Apache Cordova allows you to use the same JavaScript code in your
       Cordova application as you use in your web application.
     </description>
 
-    <repo>https://github.com/jeduan/cordova-plugin-facebook4</repo>
+    <repo>https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect</repo>
 
     <license>Apache 2.0</license>
 
     <preference name="APP_ID" />
     <preference name="APP_NAME" />
     <preference name="FACEBOOK_HYBRID_APP_EVENTS" default="false" />
-    <preference name="FACEBOOK_ANDROID_SDK_VERSION" default="5.13.0"/>
+    <preference name="FACEBOOK_ANDROID_SDK_VERSION" default="8.1.0"/>
+    <preference name="FACEBOOK_BROWSER_SDK_VERSION" default="v9.0" />
 
     <engines>
         <!-- Requires > 3.5.0 because of the custom Framework tag for iOS [CB-6698] -->
@@ -166,9 +167,9 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="FBSDKCoreKit" spec="5.15.0"/>
-                <pod name="FBSDKLoginKit" spec="5.15.0"/>
-                <pod name="FBSDKShareKit" spec="5.15.0"/>
+                <pod name="FBSDKCoreKit" spec="8.2.0"/>
+                <pod name="FBSDKLoginKit" spec="8.2.0"/>
+                <pod name="FBSDKShareKit" spec="8.2.0"/>
             </pods>
         </podspec>
 
@@ -192,8 +193,8 @@
             <access origin="https://*.fbcdn.net" />
             <access origin="https://*.akamaihd.net" />
         </config-file>
+        
+        <!-- after_prepare hook to populate APP_ID -->
+        <hook type="after_prepare" src="scripts/after_prepare.js" />
     </platform>
-
-    <!-- after_prepare hook to populate APP_ID -->
-    <hook type="after_prepare" src="scripts/after_prepare.js" />
 </plugin>
