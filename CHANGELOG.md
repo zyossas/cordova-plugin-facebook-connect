@@ -1,3 +1,14 @@
+<a name="1.0.1"></a>
+# [1.0.1](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.0.1) (2021-01-08)
+
+## Bug Fixes
+
+* Updated browser after_prepare hook to properly treat APP_ID as a string (closes [#4](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/4))
+
+## Documentation
+
+* Updated README to note that special characters such as ampersands must be escaped to avoid build errors (closes [#5](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/5))
+
 <a name="1.0.0"></a>
 # [1.0.0](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.0.0) (2021-01-03)
 
@@ -10,7 +21,7 @@ v1.0.0 is the initial release of the plugin, created as a fork of the now-deprec
 * Updated the Facebook JavaScript SDK used by the browser platform to v9.0
 * Added the `FACEBOOK_BROWSER_SDK_VERSION` preference to override the default JavaScript SDK version
 
-### Bug Fixes
+## Bug Fixes
 
 * Fixed an issue that previously caused a loop when logging into Facebook on iOS
 * Removed all references to Open Graph Stories, which were [deprecated by Facebook in 2019](https://developers.facebook.com/docs/sharing/opengraph)
