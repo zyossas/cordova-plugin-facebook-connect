@@ -21,6 +21,8 @@ Make sure you've registered your Facebook app with Facebook and have an `APP_ID`
 $ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="123456789" --variable APP_NAME="myApplication"
 ```
 
+As the `APP_NAME` is used as a string in XML files, if your app name contains any special characters like "&", make sure you escape them, e.g. "&amp;".
+
 If you need to change your `APP_ID` after installation, it's recommended that you remove and then re-add the plugin as above. Note that changes to the `APP_ID` value in your `config.xml` file will *not* be propagated to the individual platform builds.
 
 IMPORTANT: This plugin works as is with cordova-ios 5 but if you use earlier version of cordova-ios then you need to add the code in the following comment to your CordovaLib/Classes/Public/CDVAppDelegate.m file which was added to your project as part of the cordova-ios ios platform template: https://github.com/apache/cordova-ios/issues/476#issuecomment-460907247

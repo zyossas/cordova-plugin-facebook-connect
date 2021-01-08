@@ -154,9 +154,9 @@ if (window.location.protocol === "file:") {
 } else {
   window.fbAsyncInit = function() {
     FB.init({
-      appId      : APP_ID,  // APP_ID is populated by the cordova after_prepare hook
+      appId      : APP_ID,  // populated by the cordova after_prepare hook
       xfbml      : true,
-      version    : FACEBOOK_BROWSER_SDK_VERSION // FACEBOOK_BROWSER_SDK_VERSION is populated by the cordova after_prepare hook
+      version    : FACEBOOK_BROWSER_SDK_VERSION // populated by the cordova after_prepare hook
     });
 
     __fbSdkReady = true;
