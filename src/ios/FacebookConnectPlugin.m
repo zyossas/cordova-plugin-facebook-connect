@@ -93,6 +93,13 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)setAutoLogAppEventsEnabled:(CDVInvokedUrlCommand *)command {
+    BOOL enabled = [command.arguments objectAtIndex:0];
+    [FBSDKSettings setAutoLogAppEventsEnabled:enabled];
+    CDVPluginResult *res = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+}
+
 - (void)logEvent:(CDVInvokedUrlCommand *)command {
     if ([command.arguments count] == 0) {
         // Not enough arguments
