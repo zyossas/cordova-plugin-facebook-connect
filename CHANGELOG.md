@@ -1,3 +1,10 @@
+<a name="1.0.2"></a>
+# [1.0.2](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.0.2) (2021-01-16)
+
+## Bug Fixes
+
+* Updated the plugin's `api` method to ensure that Graph API requests on iOS work as expected with the most recent version of the Facebook SDK (closes [#12](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/12))
+
 <a name="1.0.1"></a>
 # [1.0.1](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.0.1) (2021-01-08)
 
