@@ -316,7 +316,7 @@ facebookConnectPlugin.showDialog({
 );
 ```
 
-### Hybrid Mobile App Events
+## Hybrid Mobile App Events
 
 Starting from Facebook SDK v4.34 for both iOS and Android, there is a new way of converting pixel events into mobile app events. For more information: [https://developers.facebook.com/docs/app-events/hybrid-app-events/](https://developers.facebook.com/docs/app-events/hybrid-app-events/)
 
@@ -328,7 +328,7 @@ Please check [this repo](https://github.com/msencer/fb_hybrid_app_events_sample)
 
 **NOTE(iOS):** This feature only works with WKWebView so if using an old version of Cordova, an additional plugin (e.g cordova-plugin-wkwebview-engine) is needed.
 
-### GDPR Compliance
+## GDPR Compliance
 
 This Plugin supports Facebook's [GDPR Compliance](https://developers.facebook.com/docs/app-events/gdpr-compliance/) **Delaying Automatic Event Collection**.
 
