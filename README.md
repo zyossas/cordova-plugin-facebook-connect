@@ -344,10 +344,10 @@ As this variable currently only works in Android, you have to edit the config fo
 Then, re-enable auto-logging after an end User provides consent by calling the `setAutoLogAppEventsEnabled` method and set it to true.
 
 ```js
-facebookConnectPlugin.setAutoLogAppEventsEnabled(true, () => {
+facebookConnectPlugin.setAutoLogAppEventsEnabled(true, function() {
   console.log('setAutoLogAppEventsEnabled set successfully');
-}, () => {
-  console.error(`setAutoLogAppEventsEnabled failed`);
+}, function() {
+  console.error('setAutoLogAppEventsEnabled failed');
 });
 ```
 
