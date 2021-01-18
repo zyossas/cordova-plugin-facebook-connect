@@ -327,3 +327,26 @@ $ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="1
 Please check [this repo](https://github.com/msencer/fb_hybrid_app_events_sample) for an example app using this feature.
 
 **NOTE(iOS):** This feature only works with WKWebView so if using an old version of Cordova, an additional plugin (e.g cordova-plugin-wkwebview-engine) is needed.
+
+### GDPR Compliance
+
+This Plugin supports Facebook's [GDPR Compliance](https://developers.facebook.com/docs/app-events/gdpr-compliance/) **Delaying Automatic Event Collection**.
+
+In order to enable this feature in your cordova app, please set the *FACEBOOK_AUTO_LOG_EVENTS* variable to "false" (default is true).
+As this variable currently only works in Android, you have to edit the config for iOS yourself by adding the following to your **config.xml**:
+
+```xml
+<config-file parent="FacebookAutoLogAppEventsEnabled" target="*-Info.plist">
+    <false />
+</config-file>
+```
+
+Then, re-enable auto-logging after an end User provides consent by calling the `setAutoLogAppEventsEnabled` method and set it to true.
+
+```js
+facebookConnectPlugin.setAutoLogAppEventsEnabled(true, () => {
+  console.log('setAutoLogAppEventsEnabled set successfully');
+}, () => {
+  console.error(`setAutoLogAppEventsEnabled failed`);
+});
+```

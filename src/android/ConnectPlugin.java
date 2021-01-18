@@ -268,6 +268,10 @@ public class ConnectPlugin extends CordovaPlugin {
             }
             return true;
 
+        } else if(action.equals("setAutoLogAppEventsEnabled")) {
+            executeSetAutoLogAppEventsEnabled(args, callbackContext);
+            return true;
+
         } else if (action.equals("logEvent")) {
             executeLogEvent(args, callbackContext);
             return true;
@@ -520,6 +524,12 @@ public class ConnectPlugin extends CordovaPlugin {
             // Request new read permissions
             loginManager.logInWithReadPermissions(cordova.getActivity(), permissions);
         }
+    }
+
+    private void executeSetAutoLogAppEventsEnabled(JSONArray args, CallbackContext callbackContext) {
+        boolean enabled = args.optBoolean(0);
+        FacebookSdk.setAutoLogAppEventsEnabled(enabled);
+        callbackContext.success();
     }
 
     private void executeLogEvent(JSONArray args, CallbackContext callbackContext) throws JSONException {
