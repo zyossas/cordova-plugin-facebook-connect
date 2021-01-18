@@ -19,6 +19,7 @@
 
     <preference name="APP_ID" />
     <preference name="APP_NAME" />
+    <preference name="FACEBOOK_URL_SCHEME_SUFFIX" default=" " />
     <preference name="FACEBOOK_AUTO_LOG_EVENTS" default="true" />
     <preference name="FACEBOOK_HYBRID_APP_EVENTS" default="false" />
     <preference name="FACEBOOK_ANDROID_SDK_VERSION" default="8.1.0"/>
@@ -112,6 +113,10 @@
             <string>$APP_NAME</string>
         </config-file>
 
+        <config-file target="*-Info.plist" parent="FacebookUrlSchemeSuffix">
+            <string>FACEBOOK_URL_SCHEME_SUFFIX_PLACEHOLDER</string>
+        </config-file>
+
         <config-file target="*-Info.plist" parent="FacebookHybridAppEvents">
             <string>$FACEBOOK_HYBRID_APP_EVENTS</string>
         </config-file>
@@ -121,7 +126,7 @@
             <dict>
               <key>CFBundleURLSchemes</key>
               <array>
-                <string>fb$APP_ID</string>
+                <string>fb$APP_IDFACEBOOK_URL_SCHEME_SUFFIX_PLACEHOLDER</string>
               </array>
             </dict>
           </array>
@@ -177,6 +182,7 @@
             </pods>
         </podspec>
 
+        <hook type="after_prepare" src="scripts/ios/after_prepare.js" />
     </platform>
 
     <!-- browser -->
