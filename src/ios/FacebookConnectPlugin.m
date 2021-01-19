@@ -139,22 +139,26 @@
 }
 
 - (void)logPurchase:(CDVInvokedUrlCommand *)command {
-    /*
-     While calls to logEvent can be made to register purchase events,
-     there is a helper method that explicitly takes a currency indicator.
-     */
-    CDVPluginResult *res;
-    if ([command.arguments count] != 2) {
-        res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Invalid arguments"];
+    if ([command.arguments count] < 2 || [command.arguments count] > 3 ) {
+        CDVPluginResult *res = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"Invalid arguments"];
         [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
         return;
     }
-    double value = [[command.arguments objectAtIndex:0] doubleValue];
-    NSString *currency = [command.arguments objectAtIndex:1];
-    [FBSDKAppEvents logPurchase:value currency:currency];
 
-    res = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
-    [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+    [self.commandDelegate runInBackground:^{
+        double value = [[command.arguments objectAtIndex:0] doubleValue];
+        NSString *currency = [command.arguments objectAtIndex:1];
+        
+        if ([command.arguments count] == 2 ) {
+            [FBSDKAppEvents logPurchase:value currency:currency];
+        } else if ([command.arguments count] >= 3) {
+            NSDictionary *params = [command.arguments objectAtIndex:2];
+            [FBSDKAppEvents logPurchase:value currency:currency parameters:params];
+        }
+
+        CDVPluginResult *res = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+        [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+    }];
 }
 
 - (void)login:(CDVInvokedUrlCommand *)command {

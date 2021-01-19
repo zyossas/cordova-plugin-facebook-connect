@@ -33,8 +33,17 @@ exports.logEvent = function logEvent (name, params, valueToSum, s, f) {
   }
 }
 
-exports.logPurchase = function logPurchase (value, currency, s, f) {
-  exec(s, f, 'FacebookConnectPlugin', 'logPurchase', [value, currency])
+exports.logPurchase = function logPurchase (value, currency, params, s, f) {
+  if (typeof params === 'function') {
+    s = params;
+    f = s;
+    params = undefined;
+  }
+  if (!params) {
+    exec(s, f, 'FacebookConnectPlugin', 'logPurchase', [value, currency])
+  } else {
+    exec(s, f, 'FacebookConnectPlugin', 'logPurchase', [value, currency, params])
+  }
 }
 
 exports.getAccessToken = function getAccessToken (s, f) {

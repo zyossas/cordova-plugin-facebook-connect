@@ -216,9 +216,9 @@ Events are listed on the [insights page](https://www.facebook.com/insights/)
 
 #### Log a Purchase
 
-`logPurchase(Number value, String currency, Function success, Function failure)`
+`logPurchase(Number value, String currency, Object params, Function success, Function failure)`
 
-**NOTE:** Both parameters are required. The currency specification is expected to be an [ISO 4217 currency code](http://en.wikipedia.org/wiki/ISO_4217)
+**NOTE:** Both `value` and `currency` are required. The currency specification is expected to be an [ISO 4217 currency code](http://en.wikipedia.org/wiki/ISO_4217). `params` is optional.
 
 #### Manually log activation events
 

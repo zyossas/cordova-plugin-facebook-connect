@@ -103,14 +103,19 @@ exports.logEvent = function logEvent (eventName, params, valueToSum, s, f) {
   if(s) s();
 }
 
-exports.logPurchase = function logPurchase (value, currency, s, f) {
+exports.logPurchase = function logPurchase (value, currency, params, s, f) {
+  if (typeof params === 'function') {
+    s = params;
+    f = s;
+    params = undefined;
+  }
   if (!__fbSdkReady) {
     return __fbCallbacks.push(function() {
-      logPurchase(value, currency, s, f);
+      logPurchase(value, currency, params, s, f);
     });
   }
   
-  FB.AppEvents.logPurchase(value, currency);
+  FB.AppEvents.logPurchase(value, currency, params);
 
   if(s) s();
 }
