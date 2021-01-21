@@ -174,13 +174,15 @@ Failure function returns an error String.
 
 ### The Graph API
 
-`facebookConnectPlugin.api(String requestPath, Array permissions, Function success, Function failure)`
+`facebookConnectPlugin.api(String requestPath, Array permissions, String httpMethod, Function success, Function failure)`
 
 Allows access to the Facebook Graph API. This API allows for additional permission because, unlike login, the Graph API can accept multiple permissions.
 
 Example permissions:
 
 	["public_profile", "user_birthday"]
+
+`httpMethod` is optional and defaults to "GET".
 
 Success function returns an Object.
 

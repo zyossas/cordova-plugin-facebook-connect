@@ -132,7 +132,19 @@ exports.logout = function logout (s, f) {
   })
 }
 
-exports.api = function api (graphPath, permissions, s, f) {
+exports.api = function api (graphPath, permissions, httpMethod, s, f) {
+  if (typeof httpMethod === 'function') {
+    s = httpMethod;
+    f = s;
+    httpMethod = undefined;
+  }
+  if (httpMethod) {
+    httpMethod = httpMethod.toLowerCase();
+    if (httpMethod != 'post' && httpMethod != 'delete') {
+      httpMethod = undefined;
+    }
+  }
+  httpMethod = httpMethod || 'get'
   if (!__fbSdkReady) {
     return __fbCallbacks.push(function() {
       api(graphPath, permissions, s, f);
@@ -140,7 +152,7 @@ exports.api = function api (graphPath, permissions, s, f) {
   }
 
   // JS API does not take additional permissions
-  FB.api(graphPath, function (response) {
+  FB.api(graphPath, httpMethod, function (response) {
     if (response.error) {
       f(response)
     } else {

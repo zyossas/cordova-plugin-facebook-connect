@@ -19,6 +19,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.FacebookServiceException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.FacebookAuthorizationException;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.applinks.AppLinkData;
@@ -71,6 +72,7 @@ public class ConnectPlugin extends CordovaPlugin {
     private CallbackContext loginContext = null;
     private CallbackContext showDialogContext = null;
     private CallbackContext lastGraphContext = null;
+    private String lastGraphRequestMethod = null;
     private String graphPath;
     private ShareDialog shareDialog;
     private GameRequestDialog gameRequestDialog;
@@ -110,7 +112,7 @@ public class ConnectPlugin extends CordovaPlugin {
                         // If this login comes after doing a new permission request
                         // make the outstanding graph call
                         if (lastGraphContext != null) {
-                            makeGraphCall(lastGraphContext);
+                            makeGraphCall(lastGraphContext, lastGraphRequestMethod);
                             return;
                         }
 
@@ -445,6 +447,13 @@ public class ConnectPlugin extends CordovaPlugin {
     private void executeGraph(JSONArray args, CallbackContext callbackContext) throws JSONException {
         lastGraphContext = callbackContext;
         CallbackContext graphContext  = callbackContext;
+        String requestMethod = null;
+        if (args.length() < 3) {
+            lastGraphRequestMethod = null;
+        } else {
+            lastGraphRequestMethod = args.getString(2);
+            requestMethod = args.getString(2);
+        }
         PluginResult pr = new PluginResult(PluginResult.Status.NO_RESULT);
         pr.setKeepCallback(true);
         graphContext.sendPluginResult(pr);
@@ -458,7 +467,7 @@ public class ConnectPlugin extends CordovaPlugin {
         }
 
         if (permissions.size() == 0) {
-            makeGraphCall(graphContext);
+            makeGraphCall(graphContext, requestMethod);
             return;
         }
 
@@ -468,7 +477,7 @@ public class ConnectPlugin extends CordovaPlugin {
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken.getPermissions().containsAll(permissions)) {
-            makeGraphCall(graphContext);
+            makeGraphCall(graphContext, requestMethod);
             return;
         }
 
@@ -612,6 +621,7 @@ public class ConnectPlugin extends CordovaPlugin {
 
         // #568: Reset lastGraphContext in case it would still contains the last graphApi results of a previous session (login -> graphApi -> logout -> login)
         lastGraphContext = null;
+        lastGraphRequestMethod = null;
 
         // Get the permissions
         Set<String> permissions = new HashSet<String>(args.length());
@@ -746,7 +756,7 @@ public class ConnectPlugin extends CordovaPlugin {
         }
     }
 
-    private void makeGraphCall(final CallbackContext graphContext ) {
+    private void makeGraphCall(final CallbackContext graphContext, String requestMethod) {
         //If you're using the paging URLs they will be URLEncoded, let's decode them.
         try {
             graphPath = URLDecoder.decode(graphPath, "UTF-8");
@@ -769,6 +779,10 @@ public class ConnectPlugin extends CordovaPlugin {
                 }
             }
         });
+
+        if (requestMethod != null) {
+            graphRequest.setHttpMethod(HttpMethod.valueOf(requestMethod));
+        }
 
         Bundle params = graphRequest.getParameters();
 

@@ -54,9 +54,24 @@ exports.logout = function logout (s, f) {
   exec(s, f, 'FacebookConnectPlugin', 'logout', [])
 }
 
-exports.api = function api (graphPath, permissions, s, f) {
+exports.api = function api (graphPath, permissions, httpMethod, s, f) {
   permissions = permissions || []
-  exec(s, f, 'FacebookConnectPlugin', 'graphApi', [graphPath, permissions])
+  if (typeof httpMethod === 'function') {
+    s = httpMethod;
+    f = s;
+    httpMethod = undefined;
+  }
+  if (httpMethod) {
+    httpMethod = httpMethod.toUpperCase();
+    if (httpMethod != 'POST' && httpMethod != 'DELETE') {
+      httpMethod = undefined;
+    }
+  }
+  if (!httpMethod) {
+    exec(s, f, 'FacebookConnectPlugin', 'graphApi', [graphPath, permissions])
+  } else {
+    exec(s, f, 'FacebookConnectPlugin', 'graphApi', [graphPath, permissions, httpMethod])
+  }
 }
 
 exports.getDeferredApplink = function (s, f) {

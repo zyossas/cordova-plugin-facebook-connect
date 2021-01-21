@@ -392,6 +392,11 @@
 
     NSString *graphPath = [command argumentAtIndex:0];
     NSArray *permissionsNeeded = [command argumentAtIndex:1];
+    NSString *requestMethod = nil;
+    if ([command.arguments count] >= 3) {
+        requestMethod = [command argumentAtIndex:2];
+    }
+
     NSSet *currentPermissions = [FBSDKAccessToken currentAccessToken].permissions;
 
     // We will store here the missing permissions that we will have to request
@@ -424,7 +429,7 @@
     };
 
     NSLog(@"Graph Path = %@", graphPath);
-    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:nil];
+    FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc] initWithGraphPath:graphPath parameters:nil HTTPMethod:requestMethod];
 
     // If we have permissions to request
     if ([permissions count] == 0){
