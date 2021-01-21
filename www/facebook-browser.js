@@ -103,14 +103,19 @@ exports.logEvent = function logEvent (eventName, params, valueToSum, s, f) {
   if(s) s();
 }
 
-exports.logPurchase = function logPurchase (value, currency, s, f) {
+exports.logPurchase = function logPurchase (value, currency, params, s, f) {
+  if (typeof params === 'function') {
+    s = params;
+    f = s;
+    params = undefined;
+  }
   if (!__fbSdkReady) {
     return __fbCallbacks.push(function() {
-      logPurchase(value, currency, s, f);
+      logPurchase(value, currency, params, s, f);
     });
   }
   
-  FB.AppEvents.logPurchase(value, currency);
+  FB.AppEvents.logPurchase(value, currency, params);
 
   if(s) s();
 }
@@ -127,7 +132,19 @@ exports.logout = function logout (s, f) {
   })
 }
 
-exports.api = function api (graphPath, permissions, s, f) {
+exports.api = function api (graphPath, permissions, httpMethod, s, f) {
+  if (typeof httpMethod === 'function') {
+    s = httpMethod;
+    f = s;
+    httpMethod = undefined;
+  }
+  if (httpMethod) {
+    httpMethod = httpMethod.toLowerCase();
+    if (httpMethod != 'post' && httpMethod != 'delete') {
+      httpMethod = undefined;
+    }
+  }
+  httpMethod = httpMethod || 'get'
   if (!__fbSdkReady) {
     return __fbCallbacks.push(function() {
       api(graphPath, permissions, s, f);
@@ -135,7 +152,7 @@ exports.api = function api (graphPath, permissions, s, f) {
   }
 
   // JS API does not take additional permissions
-  FB.api(graphPath, function (response) {
+  FB.api(graphPath, httpMethod, function (response) {
     if (response.error) {
       f(response)
     } else {

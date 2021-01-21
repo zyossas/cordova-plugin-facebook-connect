@@ -174,13 +174,15 @@ Failure function returns an error String.
 
 ### The Graph API
 
-`facebookConnectPlugin.api(String requestPath, Array permissions, Function success, Function failure)`
+`facebookConnectPlugin.api(String requestPath, Array permissions, String httpMethod, Function success, Function failure)`
 
 Allows access to the Facebook Graph API. This API allows for additional permission because, unlike login, the Graph API can accept multiple permissions.
 
 Example permissions:
 
 	["public_profile", "user_birthday"]
+
+`httpMethod` is optional and defaults to "GET".
 
 Success function returns an Object.
 
@@ -216,9 +218,9 @@ Events are listed on the [insights page](https://www.facebook.com/insights/)
 
 #### Log a Purchase
 
-`logPurchase(Number value, String currency, Function success, Function failure)`
+`logPurchase(Number value, String currency, Object params, Function success, Function failure)`
 
-**NOTE:** Both parameters are required. The currency specification is expected to be an [ISO 4217 currency code](http://en.wikipedia.org/wiki/ISO_4217)
+**NOTE:** Both `value` and `currency` are required. The currency specification is expected to be an [ISO 4217 currency code](http://en.wikipedia.org/wiki/ISO_4217). `params` is optional.
 
 #### Manually log activation events
 
@@ -316,14 +318,44 @@ facebookConnectPlugin.showDialog({
 );
 ```
 
-### Hybrid Mobile App Events
+## Hybrid Mobile App Events
 
 Starting from Facebook SDK v4.34 for both iOS and Android, there is a new way of converting pixel events into mobile app events. For more information: [https://developers.facebook.com/docs/app-events/hybrid-app-events/](https://developers.facebook.com/docs/app-events/hybrid-app-events/)
 
-In order to enable this feature in your cordova app, please set the *FACEBOOK_HYBRID_APP_EVENTS* variable to "true"(default is false):
+In order to enable this feature in your Cordova app, please set the *FACEBOOK_HYBRID_APP_EVENTS* variable to "true" (default is false):
+
 ```bash
 $ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="123456789" --variable APP_NAME="myApplication" --variable FACEBOOK_HYBRID_APP_EVENTS="true"
 ```
+
 Please check [this repo](https://github.com/msencer/fb_hybrid_app_events_sample) for an example app using this feature.
 
 **NOTE(iOS):** This feature only works with WKWebView so if using an old version of Cordova, an additional plugin (e.g cordova-plugin-wkwebview-engine) is needed.
+
+## GDPR Compliance
+
+This Plugin supports Facebook's [GDPR Compliance](https://developers.facebook.com/docs/app-events/gdpr-compliance/) **Delaying Automatic Event Collection**.
+
+In order to enable this feature in your Cordova app, please set the *FACEBOOK_AUTO_LOG_APP_EVENTS* variable to "false" (default is true).
+
+```bash
+$ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="123456789" --variable APP_NAME="myApplication" --variable FACEBOOK_AUTO_LOG_APP_EVENTS="false"
+```
+
+Then, re-enable auto-logging after an end User provides consent by calling the `setAutoLogAppEventsEnabled` method and set it to true.
+
+```js
+facebookConnectPlugin.setAutoLogAppEventsEnabled(true, function() {
+  console.log('setAutoLogAppEventsEnabled set successfully');
+}, function() {
+  console.error('setAutoLogAppEventsEnabled failed');
+});
+```
+
+## URL Suffixes for Multiple Apps
+
+When using the same Facebook app with multiple iOS apps, use the *FACEBOOK_URL_SCHEME_SUFFIX* variable to set a unique URL Suffix for each app. This ensures that Facebook redirects back to the correct app after closing the login window.
+
+```bash
+$ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="123456789" --variable APP_NAME="myApplication" --variable FACEBOOK_URL_SCHEME_SUFFIX="mysecondapp"
+```

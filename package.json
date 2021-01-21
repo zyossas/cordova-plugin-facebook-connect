@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-facebook-connect",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Cordova Facebook SDK Plugin",
   "cordova": {
     "id": "cordova-plugin-facebook-connect",
