@@ -1,3 +1,13 @@
+<a name="1.1.0"></a>
+# [1.1.0](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.1.0) (2021-01-21)
+
+## Features
+
+* Added the `FACEBOOK_URL_SCHEME_SUFFIX` preference to allow for specifying a unique URL Suffix for cases where multiple apps use the same Facebook app (closes [#3](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/3))
+* Added the `FACEBOOK_AUTO_LOG_APP_EVENTS` preference and a new `setAutoLogAppEventsEnabled` method to allow for disabling automatic event collection, an important feature for GDPR compliance (closes [#7](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/7))
+* Updated the `api` method to allow for optionally passing an httpMethod (one of "POST" or "DELETE") in Graph API requests (closes [#10](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/10))
+* Updated the `logPurchase` method to accept an optional argument for parameters (closes [#6](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/6))
+
 <a name="1.0.2"></a>
 # [1.0.2](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.0.2) (2021-01-16)
 
