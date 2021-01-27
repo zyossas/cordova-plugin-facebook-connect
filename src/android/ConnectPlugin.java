@@ -248,6 +248,10 @@ public class ConnectPlugin extends CordovaPlugin {
             executeLogin(args, callbackContext);
             return true;
 
+        } else if (action.equals("checkHasCorrectPermissions")) {
+            executeCheckHasCorrectPermissions(args, callbackContext);
+            return true;
+
         } else if (action.equals("logout")) {
             if (hasAccessToken()) {
                 LoginManager.getInstance().logOut();
@@ -696,6 +700,24 @@ public class ConnectPlugin extends CordovaPlugin {
             // Request new read permissions
             LoginManager.getInstance().logInWithReadPermissions(cordova.getActivity(), permissions);
         }
+    }
+
+    private void executeCheckHasCorrectPermissions(JSONArray args, CallbackContext callbackContext) throws JSONException {
+        Set<String> permissions = new HashSet<String>(args.length());
+
+        for (int i = 0; i < args.length(); i++) {
+            permissions.add(args.getString(i));
+        }
+
+        if (permissions.size() > 0) {
+            AccessToken accessToken = AccessToken.getCurrentAccessToken();
+            if (!accessToken.getPermissions().containsAll(permissions)) {
+                callbackContext.error("A permission has been denied");
+                return;
+            }
+        }
+
+        callbackContext.success("All permissions have been accepted");
     }
 
     private void enableHybridAppEvents() {

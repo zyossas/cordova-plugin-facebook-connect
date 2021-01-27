@@ -94,7 +94,7 @@ Failure function returns an error String.
 
 `facebookConnectPlugin.logout(Function success, Function failure)`
 
-### Check permissions (iOS only)
+### Check permissions
 
 `facebookConnectPlugin.checkHasCorrectPermissions(Array strings of permissions, Function success, Function failure)`
 

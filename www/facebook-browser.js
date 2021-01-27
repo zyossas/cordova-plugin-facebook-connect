@@ -82,6 +82,43 @@ exports.login = function login (permissions, s, f) {
   }, options)
 }
 
+exports.checkHasCorrectPermissions = function checkHasCorrectPermissions (permissions, s, f) {
+  if (!__fbSdkReady) {
+    return __fbCallbacks.push(function() {
+      checkHasCorrectPermissions(permissions, s, f);
+    });
+  }
+
+  if (!permissions || permissions.length === 0) {
+    s('All permissions have been accepted')
+  } else {
+    FB.api('/me/permissions', function (response) {
+      if (response.error || !response.data) {
+        f('There was an error getting the list of the user\'s permissions.')
+      } else {
+        var userPermissions = response.data, 
+        grantedPermissions = [], 
+        declinedPermissionsFound = false
+        for (var x = 0; x < userPermissions.length; x++) {
+          if (userPermissions[x].status == 'granted') {
+            grantedPermissions.push(userPermissions[x].permission);
+          }
+        }
+        for (var x = 0; x < permissions.length; x++) {
+          if (grantedPermissions.indexOf(permissions[x]) < 0) {
+            declinedPermissionsFound = true;
+          }
+        }
+        if (declinedPermissionsFound) {
+          f('A permission has been denied')
+        } else {
+          s('All permissions have been accepted')
+        }
+      }
+    })
+  }
+}
+
 exports.getAccessToken = function getAccessToken (s, f) {
   var response = FB.getAccessToken()
   if (response) {
