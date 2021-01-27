@@ -11,7 +11,7 @@ exports.getLoginStatus = function getLoginStatus (s, f) {
   }
 
   FB.getLoginStatus(function (response) {
-    s(response)
+    if(s) s(response);
   })
 }
 
@@ -32,10 +32,10 @@ exports.showDialog = function showDialog (options, s, f) {
 
   FB.ui(options, function (response) {
     if (response && (response.request || !response.error_code)) {
-      s(response)
+      if(s) s(response);
       return
     }
-    f(response.message)
+    if(f) f(response.message);
   })
 }
 // Attach this to a UI element, this requires user interaction.
@@ -69,15 +69,15 @@ exports.login = function login (permissions, s, f) {
    */
   FB.login(function (response) {
     if (response.authResponse) {
-      s(response)
+      if(s) s(response);
     } else if (response) { // Previously this was just an else statement.
       if (response.status) { // When status is undefined this would throw an error, and rejection function would never be invoked.
-        f(response.status.message)
+        if(f) f(response.status.message);
       } else {
-        f(response)
+        if(f) f(response);
       }
     } else { // In case that no response is available (e.g. popup dismissed)
-      f('No response')
+      if(f) f('No response');
     } 
   }, options)
 }
@@ -90,11 +90,11 @@ exports.checkHasCorrectPermissions = function checkHasCorrectPermissions (permis
   }
 
   if (!permissions || permissions.length === 0) {
-    s('All permissions have been accepted')
+    if(s) s('All permissions have been accepted');
   } else {
     FB.api('/me/permissions', function (response) {
       if (response.error || !response.data) {
-        f('There was an error getting the list of the user\'s permissions.')
+        if(f) f('There was an error getting the list of the user\'s permissions.');
       } else {
         var userPermissions = response.data, 
         grantedPermissions = [], 
@@ -110,9 +110,9 @@ exports.checkHasCorrectPermissions = function checkHasCorrectPermissions (permis
           }
         }
         if (declinedPermissionsFound) {
-          f('A permission has been denied')
+          if(f) f('A permission has been denied');
         } else {
-          s('All permissions have been accepted')
+          if(s) s('All permissions have been accepted');
         }
       }
     })
@@ -122,10 +122,10 @@ exports.checkHasCorrectPermissions = function checkHasCorrectPermissions (permis
 exports.getAccessToken = function getAccessToken (s, f) {
   var response = FB.getAccessToken()
   if (response) {
-    s(response)
+    if(s) s(response);
     return
   }
-  f('NO_TOKEN')
+  if(f) f('NO_TOKEN');
 }
 
 exports.logEvent = function logEvent (eventName, params, valueToSum, s, f) {
@@ -165,7 +165,7 @@ exports.logout = function logout (s, f) {
   }
 
   FB.logout(function (response) {
-    s(response)
+    if(s) s(response);
   })
 }
 
@@ -191,9 +191,9 @@ exports.api = function api (graphPath, permissions, httpMethod, s, f) {
   // JS API does not take additional permissions
   FB.api(graphPath, httpMethod, function (response) {
     if (response.error) {
-      f(response)
+      if(f) f(response);
     } else {
-      s(response)
+      if(s) s(response);
     }
   })
 }
