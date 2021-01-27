@@ -3,7 +3,7 @@
 
 var fs = require('fs');
 
-var getPreferenceValue = function(config, name) {
+var getPreferenceValueFromConfig = function(config, name) {
     var value = config.match(new RegExp('name="' + name + '" value="(.*?)"', "i"))
     if(value && value[1]) {
         return value[1]
@@ -12,8 +12,8 @@ var getPreferenceValue = function(config, name) {
     }
 }
 
-var getPreferenceValueFromPackageJson = function (config, name) {
-    var value = config.match(new RegExp('"' + name + '":\\s"(.*?)"', "i"))
+var getPreferenceValueFromPackageJson = function (packageJson, name) {
+    var value = packageJson.match(new RegExp('"' + name + '":\\s"(.*?)"', "i"))
     if(value && value[1]) {
         return value[1]
     } else {
@@ -21,17 +21,22 @@ var getPreferenceValueFromPackageJson = function (config, name) {
     }
 }
 
+var getPreferenceValue = function (name) {
+    var config = fs.readFileSync("config.xml").toString()
+    var preferenceValue = getPreferenceValueFromConfig(config, name)
+    if(!preferenceValue) {
+      var packageJson = fs.readFileSync("package.json").toString()
+      preferenceValue = getPreferenceValueFromPackageJson(packageJson, name)
+    }
+    return preferenceValue
+}
+
 var APP_ID = ''
 
 if(process.argv.join("|").indexOf("APP_ID=") > -1) {
 	APP_ID = process.argv.join("|").match(/APP_ID=(.*?)(\||$)/)[1]
 } else {
-	var config = fs.readFileSync("config.xml").toString()
-	APP_ID = getPreferenceValue(config, "APP_ID")
-  if(!APP_ID) {
-    var packageJson = fs.readFileSync("package.json").toString()
-    APP_ID = getPreferenceValueFromPackageJson(packageJson, "APP_ID")
-  }
+	APP_ID = getPreferenceValue("APP_ID")
 }
 
 var FACEBOOK_BROWSER_SDK_VERSION = ''
@@ -39,12 +44,7 @@ var FACEBOOK_BROWSER_SDK_VERSION = ''
 if(process.argv.join("|").indexOf("FACEBOOK_BROWSER_SDK_VERSION=") > -1) {
 	FACEBOOK_BROWSER_SDK_VERSION = process.argv.join("|").match(/FACEBOOK_BROWSER_SDK_VERSION=(.*?)(\||$)/)[1]
 } else {
-	var config = fs.readFileSync("config.xml").toString()
-	FACEBOOK_BROWSER_SDK_VERSION = getPreferenceValue(config, "FACEBOOK_BROWSER_SDK_VERSION")
-  if(!FACEBOOK_BROWSER_SDK_VERSION) {
-    var packageJson = fs.readFileSync("package.json").toString()
-    FACEBOOK_BROWSER_SDK_VERSION = getPreferenceValueFromPackageJson(packageJson, "FACEBOOK_BROWSER_SDK_VERSION")
-  }
+	FACEBOOK_BROWSER_SDK_VERSION = getPreferenceValue("FACEBOOK_BROWSER_SDK_VERSION")
 }
 
 var files = [
