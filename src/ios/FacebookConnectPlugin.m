@@ -57,7 +57,9 @@
 }
 
 - (void) applicationDidBecomeActive:(NSNotification *) notification {
-    [FBSDKAppEvents activateApp];
+    if (FBSDKSettings.isAutoLogAppEventsEnabled) {
+        [FBSDKAppEvents activateApp];
+    }
     if (self.applicationWasActivated == NO) {
         self.applicationWasActivated = YES;
         [self enableHybridAppEvents];
