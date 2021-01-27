@@ -166,6 +166,18 @@ exports.browserInit = function browserInit (appId, version, s) {
   console.trace();
 }
 
+exports.activateApp = function logEvent (s, f) {
+  if (!__fbSdkReady) {
+    return __fbCallbacks.push(function() {
+      activateApp(s, f);
+    });
+  }
+
+  FB.AppEvents.activateApp();
+
+  if(s) s();
+}
+
 if (window.location.protocol === "file:") {
   console.warn("Facebook JS SDK is not supported when using file:// protocol");
 } else {
