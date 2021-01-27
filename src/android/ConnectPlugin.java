@@ -298,6 +298,7 @@ public class ConnectPlugin extends CordovaPlugin {
                 @Override
                 public void run() {
                     AppEventsLogger.activateApp(cordova.getActivity().getApplication());
+                    callbackContext.success();
                 }
             });
 
