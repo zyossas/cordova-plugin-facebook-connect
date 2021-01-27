@@ -1,3 +1,10 @@
+<a name="1.1.1"></a>
+# [1.1.1](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.1.1) (2021-01-27)
+
+## Bug Fixes
+
+* Fixed an issue that caused standard events, e.g. App Launches, to be automatically logged on iOS despite `FACEBOOK_AUTO_LOG_APP_EVENTS` being set to "false" (closes [#16](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/16))
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.1.0) (2021-01-21)
 
