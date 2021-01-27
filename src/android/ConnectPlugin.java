@@ -274,6 +274,10 @@ public class ConnectPlugin extends CordovaPlugin {
             executeSetAutoLogAppEventsEnabled(args, callbackContext);
             return true;
 
+        } else if(action.equals("setAdvertiserIDCollectionEnabled")) {
+          executeSetAdvertiserIDCollectionEnabled(args, callbackContext);
+          return true;
+
         } else if (action.equals("logEvent")) {
             executeLogEvent(args, callbackContext);
             return true;
@@ -528,6 +532,12 @@ public class ConnectPlugin extends CordovaPlugin {
     private void executeSetAutoLogAppEventsEnabled(JSONArray args, CallbackContext callbackContext) {
         boolean enabled = args.optBoolean(0);
         FacebookSdk.setAutoLogAppEventsEnabled(enabled);
+        callbackContext.success();
+    }
+
+    private void executeSetAdvertiserIDCollectionEnabled(JSONArray args, CallbackContext callbackContext) {
+        boolean enabled = args.optBoolean(0);
+        FacebookSdk.setAdvertiserIDCollectionEnabled(enabled);
         callbackContext.success();
     }
 

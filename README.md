@@ -346,9 +346,9 @@ Then, re-enable auto-logging after an end User provides consent by calling the `
 
 ```js
 facebookConnectPlugin.setAutoLogAppEventsEnabled(true, function() {
-  console.log('setAutoLogAppEventsEnabled set successfully');
+  console.log('setAutoLogAppEventsEnabled success');
 }, function() {
-  console.error('setAutoLogAppEventsEnabled failed');
+  console.error('setAutoLogAppEventsEnabled failure');
 });
 ```
 
@@ -358,6 +358,16 @@ To disable collection of `advertiser-id`, please set the *FACEBOOK_ADVERTISER_ID
 
 ```bash
 $ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="123456789" --variable APP_NAME="myApplication" --variable FACEBOOK_ADVERTISER_ID_COLLECTION="false"
+```
+
+Then, re-enable collection by calling the `setAdvertiserIDCollectionEnabled` method and set it to true.
+
+```js
+facebookConnectPlugin.setAdvertiserIDCollectionEnabled(true, function() {
+  console.log('setAdvertiserIDCollectionEnabled success');
+}, function() {
+  console.error('setAdvertiserIDCollectionEnabled failure');
+});
 ```
 
 ## URL Suffixes for Multiple Apps
