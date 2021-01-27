@@ -23,6 +23,7 @@
     <preference name="FACEBOOK_AUTO_LOG_APP_EVENTS" default="true" />
     <preference name="FACEBOOK_HYBRID_APP_EVENTS" default="false" />
     <preference name="FACEBOOK_ANDROID_SDK_VERSION" default="8.1.0"/>
+    <preference name="FACEBOOK_IOS_SDK_VERSION" default="8.2.0"/>
     <preference name="FACEBOOK_BROWSER_SDK_VERSION" default="v9.0" />
 
     <engines>
@@ -180,9 +181,9 @@
                 <source url="https://cdn.cocoapods.org/"/>
             </config>
             <pods use-frameworks="true">
-                <pod name="FBSDKCoreKit" spec="8.2.0"/>
-                <pod name="FBSDKLoginKit" spec="8.2.0"/>
-                <pod name="FBSDKShareKit" spec="8.2.0"/>
+                <pod name="FBSDKCoreKit" spec="$FACEBOOK_IOS_SDK_VERSION"/>
+                <pod name="FBSDKLoginKit" spec="$FACEBOOK_IOS_SDK_VERSION"/>
+                <pod name="FBSDKShareKit" spec="$FACEBOOK_IOS_SDK_VERSION"/>
             </pods>
         </podspec>
 
