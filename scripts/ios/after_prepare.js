@@ -57,6 +57,25 @@ module.exports = function (context) {
     FACEBOOK_AUTO_LOG_APP_EVENTS = 'true'
   }
 
+  var FACEBOOK_ADVERTISER_ID_COLLECTION = 'true'
+
+  if(process.argv.join("|").indexOf("FACEBOOK_ADVERTISER_ID_COLLECTION=") > -1) {
+    FACEBOOK_ADVERTISER_ID_COLLECTION = process.argv.join("|").match(/FACEBOOK_ADVERTISER_ID_COLLECTION=(.*?)(\||$)/)[1]
+  } else {
+    var config = fs.readFileSync("config.xml").toString()
+    FACEBOOK_ADVERTISER_ID_COLLECTION = getPreferenceValue(config, "FACEBOOK_ADVERTISER_ID_COLLECTION")
+    if(!FACEBOOK_ADVERTISER_ID_COLLECTION) {
+      var packageJson = fs.readFileSync("package.json").toString()
+      FACEBOOK_ADVERTISER_ID_COLLECTION = getPreferenceValueFromPackageJson(packageJson, "FACEBOOK_ADVERTISER_ID_COLLECTION")
+    }
+  }
+
+  if(typeof FACEBOOK_ADVERTISER_ID_COLLECTION == 'string' && FACEBOOK_ADVERTISER_ID_COLLECTION.toLowerCase() == 'false') {
+    FACEBOOK_ADVERTISER_ID_COLLECTION = 'false'
+  } else {
+    FACEBOOK_ADVERTISER_ID_COLLECTION = 'true'
+  }
+
   var getPlistPath = function () {
     var common = context.requireCordovaModule('cordova-common'), 
     util = context.requireCordovaModule('cordova-lib/src/cordova/util'), 
@@ -81,6 +100,12 @@ module.exports = function (context) {
         plistContent = plistContent.replace('<key>FacebookAutoLogAppEventsEnabled_PLACEHOLDER</key>', '<key>FacebookAutoLogAppEventsEnabled</key>').replace('<string>FACEBOOK_AUTO_LOG_APP_EVENTS_PLACEHOLDER</string>', '<' + FACEBOOK_AUTO_LOG_APP_EVENTS + ' />')
       } else {
         plistContent = plistContent.replace('<key>FacebookAutoLogAppEventsEnabled_PLACEHOLDER</key>', '').replace('<string>FACEBOOK_AUTO_LOG_APP_EVENTS_PLACEHOLDER</string>', '')
+      }
+
+      if(plistContent.indexOf('<key>FacebookAdvertiserIDCollectionEnabled</key>') == -1) {
+        plistContent = plistContent.replace('<key>FacebookAdvertiserIDCollectionEnabled_PLACEHOLDER</key>', '<key>FacebookAdvertiserIDCollectionEnabled</key>').replace('<string>FACEBOOK_ADVERTISER_ID_COLLECTION_PLACEHOLDER</string>', '<' + FACEBOOK_ADVERTISER_ID_COLLECTION + ' />')
+      } else {
+        plistContent = plistContent.replace('<key>FacebookAdvertiserIDCollectionEnabled_PLACEHOLDER</key>', '').replace('<string>FACEBOOK_ADVERTISER_ID_COLLECTION_PLACEHOLDER</string>', '')
       }
 
       fs.writeFileSync(plistPath, plistContent, 'utf8')

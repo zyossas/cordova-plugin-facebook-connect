@@ -352,6 +352,14 @@ facebookConnectPlugin.setAutoLogAppEventsEnabled(true, function() {
 });
 ```
 
+## Collection of Advertiser IDs
+
+To disable collection of `advertiser-id`, please set the *FACEBOOK_ADVERTISER_ID_COLLECTION* variable to "false" (default is true).
+
+```bash
+$ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="123456789" --variable APP_NAME="myApplication" --variable FACEBOOK_ADVERTISER_ID_COLLECTION="false"
+```
+
 ## URL Suffixes for Multiple Apps
 
 When using the same Facebook app with multiple iOS apps, use the *FACEBOOK_URL_SCHEME_SUFFIX* variable to set a unique URL Suffix for each app. This ensures that Facebook redirects back to the correct app after closing the login window.
