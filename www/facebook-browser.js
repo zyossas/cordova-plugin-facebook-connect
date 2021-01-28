@@ -92,7 +92,7 @@ exports.checkHasCorrectPermissions = function checkHasCorrectPermissions (permis
   if (!permissions || permissions.length === 0) {
     if(s) s('All permissions have been accepted');
   } else {
-    FB.api('/me/permissions', function (response) {
+    FB.api('me/permissions', function (response) {
       if (response.error || !response.data) {
         if(f) f('There was an error getting the list of the user\'s permissions.');
       } else {
