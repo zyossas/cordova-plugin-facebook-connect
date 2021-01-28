@@ -153,6 +153,7 @@ Game request:
 		data: data,
 		title: title,
 		actionType: 'askfor',
+		objectID: 'YOUR_OBJECT_ID', 
 		filters: 'app_non_users'
 	}
 
