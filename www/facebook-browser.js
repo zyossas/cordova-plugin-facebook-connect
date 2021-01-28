@@ -29,6 +29,15 @@ exports.showDialog = function showDialog (options, s, f) {
   options.href = options.href || ''
   options.picture = options.picture || ''
   options.quote = options.quote || ''
+  if (options.actionType) {
+    options.action_type = options.actionType
+  }
+  if (options.objectID) {
+    options.object_id = options.objectID
+  }
+  if (options.filters && !Array.isArray(options.filters)) {
+    options.filters = [options.filters]
+  }
 
   FB.ui(options, function (response) {
     if (response && (response.request || !response.error_code)) {
