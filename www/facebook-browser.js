@@ -131,7 +131,7 @@ exports.getAccessToken = function getAccessToken (s, f) {
     if(s) s(response);
     return
   }
-  if(f) f('NO_TOKEN');
+  if(f) f('Session not open.');
 }
 
 exports.logEvent = function logEvent (eventName, params, valueToSum, s, f) {
