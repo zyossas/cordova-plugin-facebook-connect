@@ -24,10 +24,7 @@ exports.showDialog = function showDialog (options, s, f) {
 
   options.name = options.name || ''
   options.message = options.message || ''
-  options.caption = options.caption || ''
-  options.description = options.description || ''
   options.href = options.href || ''
-  options.picture = options.picture || ''
   options.quote = options.quote || ''
   if (options.actionType) {
     options.action_type = options.actionType

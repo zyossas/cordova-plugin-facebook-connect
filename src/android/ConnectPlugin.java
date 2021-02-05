@@ -439,12 +439,6 @@ public class ConnectPlugin extends CordovaPlugin {
             ShareLinkContent.Builder builder = new ShareLinkContent.Builder();
             if(params.containsKey("link"))
                 builder.setContentUrl(Uri.parse(params.get("link")));
-            if(params.containsKey("caption"))
-                builder.setContentTitle(params.get("caption"));
-            if(params.containsKey("picture"))
-                builder.setImageUrl(Uri.parse(params.get("picture")));
-            if(params.containsKey("description"))
-                builder.setContentDescription(params.get("description"));
 
             messageDialog.show(builder.build());
 
@@ -741,14 +735,8 @@ public class ConnectPlugin extends CordovaPlugin {
         ShareLinkContent.Builder builder = new ShareLinkContent.Builder();
         if (paramBundle.containsKey("href"))
             builder.setContentUrl(Uri.parse(paramBundle.get("href")));
-        if (paramBundle.containsKey("caption"))
-            builder.setContentTitle(paramBundle.get("caption"));
-        if (paramBundle.containsKey("description"))
-            builder.setContentDescription(paramBundle.get("description"));
         if (paramBundle.containsKey("link"))
             builder.setContentUrl(Uri.parse(paramBundle.get("link")));
-        if (paramBundle.containsKey("picture"))
-            builder.setImageUrl(Uri.parse(paramBundle.get("picture")));
         if (paramBundle.containsKey("quote"))
             builder.setQuote(paramBundle.get("quote"));
         if (paramBundle.containsKey("hashtag"))

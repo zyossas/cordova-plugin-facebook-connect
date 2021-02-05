@@ -130,9 +130,6 @@ Share Dialog:
 	{
 		method: "share",
 		href: "http://example.com",
-		caption: "Such caption, very feed.",
-		description: "Much description",
-		picture: 'http://example.com/image.png',
 		hashtag: '#myHashtag',
 		share_feedWeb: true, // iOS only
 	}
@@ -140,8 +137,6 @@ Share Dialog:
 #### iOS
 
 The default dialog mode is [`FBSDKShareDialogModeAutomatic`](https://developers.facebook.com/docs/reference/ios/current/constants/FBSDKShareDialogMode/). You can share that by adding a specific dialog mode parameter. The available share dialog modes are: `share_sheet`, `share_feedBrowser`, `share_native` and `share_feedWeb`. [Read more about share dialog modes](https://developers.facebook.com/docs/reference/ios/current/constants/FBSDKShareDialogMode/)
-
-`caption`, `description` and `picture` were deprecated in Facebok API [v2.9](https://developers.facebook.com/docs/graph-api/changelog/version2.9#gapi-deprecate) and therefore not supported anymore on iOS 
 
 Game request:
 
@@ -159,10 +154,7 @@ Send Dialog:
 
 	{
 		method: "send",
-		caption: "Check this out.",
-		link: "http://example.com",
-		description: "The site I told you about",
-		picture: "http://example.com/image.png"
+		link: "http://example.com"
 	}
 
 
@@ -304,11 +296,8 @@ Send a photo to a user's feed
 ```js
 facebookConnectPlugin.showDialog({
     method: "share",
-    picture:'https://www.google.co.jp/logos/doodles/2014/doodle-4-google-2014-japan-winner-5109465267306496.2-hp.png',
     name:'Test Post',
-    message:'First photo post',
-    caption: 'Testing using Cordova plugin',
-    description: 'Posting photo using Cordova Facebook plugin'
+    message:'First photo post'
   }, function (response) {
     console.log(response)
   }, function (response) {
