@@ -1,3 +1,21 @@
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.2.0) (2021-02-05)
+
+## Features
+
+* Added the `FACEBOOK_IOS_SDK_VERSION` preference to override the default iOS SDK version
+* Added the `FACEBOOK_ADVERTISER_ID_COLLECTION` preference and a new `setAdvertiserIDCollectionEnabled` method to allow for disabling collection of `advertiser-id` (closes [#22](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/22))
+* Updated the `checkHasCorrectPermissions` method so that it is now supported on all platforms (closes [#25](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/25))
+
+## Bug Fixes
+
+* Updated the `activateApp` method to use the callbacks passed to it (closes [#18](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/18))
+* Fixed an issue that would cause the `showDialog` method to fail on iOS if the `method` property was set to "apprequests" but the `actionType` property was not defined; `actionType` is now optional on all platforms (closes [#29](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/29))
+
+## Documentation
+
+* Updated README to include `objectID` property in example configuration object for the `checkHasCorrectPermissions` method; `objectID` is required by the Facebook SDK if `actionType` is non-null (and vice versa)
+
 <a name="1.1.1"></a>
 # [1.1.1](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.1.1) (2021-01-27)
 
