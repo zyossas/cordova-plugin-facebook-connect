@@ -255,10 +255,8 @@ public class ConnectPlugin extends CordovaPlugin {
         } else if (action.equals("logout")) {
             if (hasAccessToken()) {
                 LoginManager.getInstance().logOut();
-                callbackContext.success();
-            } else {
-                callbackContext.error("No valid session found, must call init and login before logout.");
             }
+            callbackContext.success();
             return true;
 
         } else if (action.equals("getLoginStatus")) {
