@@ -207,11 +207,6 @@ exports.api = function api (graphPath, permissions, httpMethod, s, f) {
   })
 }
 
-exports.browserInit = function browserInit (appId, version, s) {
-  console.warn("browserInit is deprecated and may be removed in the future");
-  console.trace();
-}
-
 exports.activateApp = function logEvent (s, f) {
   if (!__fbSdkReady) {
     return __fbCallbacks.push(function() {
