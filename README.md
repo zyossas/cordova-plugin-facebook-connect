@@ -94,7 +94,7 @@ Failure function returns an error String.
 
 `facebookConnectPlugin.logout(Function success, Function failure)`
 
-### Check permissions (iOS only)
+### Check permissions
 
 `facebookConnectPlugin.checkHasCorrectPermissions(Array strings of permissions, Function success, Function failure)`
 
@@ -153,6 +153,7 @@ Game request:
 		data: data,
 		title: title,
 		actionType: 'askfor',
+		objectID: 'YOUR_OBJECT_ID', 
 		filters: 'app_non_users'
 	}
 
@@ -346,9 +347,27 @@ Then, re-enable auto-logging after an end User provides consent by calling the `
 
 ```js
 facebookConnectPlugin.setAutoLogAppEventsEnabled(true, function() {
-  console.log('setAutoLogAppEventsEnabled set successfully');
+  console.log('setAutoLogAppEventsEnabled success');
 }, function() {
-  console.error('setAutoLogAppEventsEnabled failed');
+  console.error('setAutoLogAppEventsEnabled failure');
+});
+```
+
+## Collection of Advertiser IDs
+
+To disable collection of `advertiser-id`, please set the *FACEBOOK_ADVERTISER_ID_COLLECTION* variable to "false" (default is true).
+
+```bash
+$ cordova plugin add cordova-plugin-facebook-connect --save --variable APP_ID="123456789" --variable APP_NAME="myApplication" --variable FACEBOOK_ADVERTISER_ID_COLLECTION="false"
+```
+
+Then, re-enable collection by calling the `setAdvertiserIDCollectionEnabled` method and set it to true.
+
+```js
+facebookConnectPlugin.setAdvertiserIDCollectionEnabled(true, function() {
+  console.log('setAdvertiserIDCollectionEnabled success');
+}, function() {
+  console.error('setAdvertiserIDCollectionEnabled failure');
 });
 ```
 

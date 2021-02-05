@@ -102,6 +102,13 @@
     [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
 }
 
+- (void)setAdvertiserIDCollectionEnabled:(CDVInvokedUrlCommand *)command {
+    BOOL enabled = [command.arguments objectAtIndex:0];
+    [FBSDKSettings setAdvertiserIDCollectionEnabled:enabled];
+    CDVPluginResult *res = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:res callbackId:command.callbackId];
+}
+
 - (void)logEvent:(CDVInvokedUrlCommand *)command {
     if ([command.arguments count] == 0) {
         // Not enough arguments
@@ -346,17 +353,15 @@
         FBSDKGameRequestContent *content = [[FBSDKGameRequestContent alloc] init];
         NSString *actionType = params[@"actionType"];
         if (!actionType) {
-            CDVPluginResult *pluginResult;
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                             messageAsString:@"Cannot show dialog"];
-            return;
-        }
-        if ([[actionType lowercaseString] isEqualToString:@"askfor"]) {
+            NSLog(@"Discarding invalid argument actionType");
+        } else if ([[actionType lowercaseString] isEqualToString:@"askfor"]) {
             content.actionType = FBSDKGameRequestActionTypeAskFor;
         } else if ([[actionType lowercaseString] isEqualToString:@"send"]) {
             content.actionType = FBSDKGameRequestActionTypeSend;
         } else if ([[actionType lowercaseString] isEqualToString:@"turn"]) {
             content.actionType = FBSDKGameRequestActionTypeTurn;
+        } else {
+            NSLog(@"Discarding invalid argument actionType");
         }
 
         NSString *filters = params[@"filters"];
@@ -498,6 +503,8 @@
 - (void) activateApp:(CDVInvokedUrlCommand *)command
 {
     [FBSDKAppEvents activateApp];
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 #pragma mark - Utility methods

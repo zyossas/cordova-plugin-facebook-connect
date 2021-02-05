@@ -3,7 +3,7 @@
 var fs = require('fs');
 
 module.exports = function (context) {
-  var getPreferenceValue = function (config, name) {
+  var getPreferenceValueFromConfig = function (config, name) {
       var value = config.match(new RegExp('name="' + name + '" value="(.*?)"', "i"))
       if(value && value[1]) {
           return value[1]
@@ -12,13 +12,23 @@ module.exports = function (context) {
       }
   }
 
-  var getPreferenceValueFromPackageJson = function (config, name) {
-      var value = config.match(new RegExp('"' + name + '":\\s"(.*?)"', "i"))
+  var getPreferenceValueFromPackageJson = function (packageJson, name) {
+      var value = packageJson.match(new RegExp('"' + name + '":\\s"(.*?)"', "i"))
       if(value && value[1]) {
           return value[1]
       } else {
           return null
       }
+  }
+  
+  var getPreferenceValue = function (name) {
+      var config = fs.readFileSync("config.xml").toString()
+      var preferenceValue = getPreferenceValueFromConfig(config, name)
+      if(!preferenceValue) {
+        var packageJson = fs.readFileSync("package.json").toString()
+        preferenceValue = getPreferenceValueFromPackageJson(packageJson, name)
+      }
+      return preferenceValue
   }
 
   var FACEBOOK_URL_SCHEME_SUFFIX = ' '
@@ -26,12 +36,7 @@ module.exports = function (context) {
   if(process.argv.join("|").indexOf("FACEBOOK_URL_SCHEME_SUFFIX=") > -1) {
   	FACEBOOK_URL_SCHEME_SUFFIX = process.argv.join("|").match(/FACEBOOK_URL_SCHEME_SUFFIX=(.*?)(\||$)/)[1]
   } else {
-  	var config = fs.readFileSync("config.xml").toString()
-  	FACEBOOK_URL_SCHEME_SUFFIX = getPreferenceValue(config, "FACEBOOK_URL_SCHEME_SUFFIX")
-    if(!FACEBOOK_URL_SCHEME_SUFFIX) {
-      var packageJson = fs.readFileSync("package.json").toString()
-      FACEBOOK_URL_SCHEME_SUFFIX = getPreferenceValueFromPackageJson(packageJson, "FACEBOOK_URL_SCHEME_SUFFIX")
-    }
+  	FACEBOOK_URL_SCHEME_SUFFIX = getPreferenceValue("FACEBOOK_URL_SCHEME_SUFFIX")
   }
 
   if(FACEBOOK_URL_SCHEME_SUFFIX === ' ') {
@@ -43,18 +48,27 @@ module.exports = function (context) {
   if(process.argv.join("|").indexOf("FACEBOOK_AUTO_LOG_APP_EVENTS=") > -1) {
   	FACEBOOK_AUTO_LOG_APP_EVENTS = process.argv.join("|").match(/FACEBOOK_AUTO_LOG_APP_EVENTS=(.*?)(\||$)/)[1]
   } else {
-  	var config = fs.readFileSync("config.xml").toString()
-  	FACEBOOK_AUTO_LOG_APP_EVENTS = getPreferenceValue(config, "FACEBOOK_AUTO_LOG_APP_EVENTS")
-    if(!FACEBOOK_AUTO_LOG_APP_EVENTS) {
-      var packageJson = fs.readFileSync("package.json").toString()
-      FACEBOOK_AUTO_LOG_APP_EVENTS = getPreferenceValueFromPackageJson(packageJson, "FACEBOOK_AUTO_LOG_APP_EVENTS")
-    }
+  	FACEBOOK_AUTO_LOG_APP_EVENTS = getPreferenceValue("FACEBOOK_AUTO_LOG_APP_EVENTS")
   }
   
   if(typeof FACEBOOK_AUTO_LOG_APP_EVENTS == 'string' && FACEBOOK_AUTO_LOG_APP_EVENTS.toLowerCase() == 'false') {
     FACEBOOK_AUTO_LOG_APP_EVENTS = 'false'
   } else {
     FACEBOOK_AUTO_LOG_APP_EVENTS = 'true'
+  }
+
+  var FACEBOOK_ADVERTISER_ID_COLLECTION = 'true'
+
+  if(process.argv.join("|").indexOf("FACEBOOK_ADVERTISER_ID_COLLECTION=") > -1) {
+    FACEBOOK_ADVERTISER_ID_COLLECTION = process.argv.join("|").match(/FACEBOOK_ADVERTISER_ID_COLLECTION=(.*?)(\||$)/)[1]
+  } else {
+    FACEBOOK_ADVERTISER_ID_COLLECTION = getPreferenceValue("FACEBOOK_ADVERTISER_ID_COLLECTION")
+  }
+
+  if(typeof FACEBOOK_ADVERTISER_ID_COLLECTION == 'string' && FACEBOOK_ADVERTISER_ID_COLLECTION.toLowerCase() == 'false') {
+    FACEBOOK_ADVERTISER_ID_COLLECTION = 'false'
+  } else {
+    FACEBOOK_ADVERTISER_ID_COLLECTION = 'true'
   }
 
   var getPlistPath = function () {
@@ -81,6 +95,12 @@ module.exports = function (context) {
         plistContent = plistContent.replace('<key>FacebookAutoLogAppEventsEnabled_PLACEHOLDER</key>', '<key>FacebookAutoLogAppEventsEnabled</key>').replace('<string>FACEBOOK_AUTO_LOG_APP_EVENTS_PLACEHOLDER</string>', '<' + FACEBOOK_AUTO_LOG_APP_EVENTS + ' />')
       } else {
         plistContent = plistContent.replace('<key>FacebookAutoLogAppEventsEnabled_PLACEHOLDER</key>', '').replace('<string>FACEBOOK_AUTO_LOG_APP_EVENTS_PLACEHOLDER</string>', '')
+      }
+
+      if(plistContent.indexOf('<key>FacebookAdvertiserIDCollectionEnabled</key>') == -1) {
+        plistContent = plistContent.replace('<key>FacebookAdvertiserIDCollectionEnabled_PLACEHOLDER</key>', '<key>FacebookAdvertiserIDCollectionEnabled</key>').replace('<string>FACEBOOK_ADVERTISER_ID_COLLECTION_PLACEHOLDER</string>', '<' + FACEBOOK_ADVERTISER_ID_COLLECTION + ' />')
+      } else {
+        plistContent = plistContent.replace('<key>FacebookAdvertiserIDCollectionEnabled_PLACEHOLDER</key>', '').replace('<string>FACEBOOK_ADVERTISER_ID_COLLECTION_PLACEHOLDER</string>', '')
       }
 
       fs.writeFileSync(plistPath, plistContent, 'utf8')
