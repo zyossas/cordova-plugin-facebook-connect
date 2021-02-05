@@ -28,9 +28,7 @@
     <preference name="FACEBOOK_BROWSER_SDK_VERSION" default="v9.0" />
 
     <engines>
-        <!-- Requires > 3.5.0 because of the custom Framework tag for iOS [CB-6698] -->
-        <!-- Requires > 4.0.0 because of the Framework tag for Android that uses gradle -->
-        <engine name="cordova-android" version=">=3.5.0" />
+        <engine name="cordova-android" version=">=7.0.0" />
         <engine name="cordova-ios" version=">=3.5.0" />
     </engines>
 
@@ -54,15 +52,6 @@
         </config-file>
 
         <source-file src="src/android/facebookconnect.xml" target-dir="res/values" />
-        <!-- Used for cordova-android 6 -->
-        <config-file target="res/values/facebookconnect.xml" parent="/*">
-            <string name="fb_app_id">$APP_ID</string>
-            <string name="fb_app_name">$APP_NAME</string>
-            <bool name="fb_auto_log_app_events_enabled">$FACEBOOK_AUTO_LOG_APP_EVENTS</bool>
-            <bool name="fb_hybrid_app_events">$FACEBOOK_HYBRID_APP_EVENTS</bool>
-            <bool name="fb_advertiser_id_collection_enabled">$FACEBOOK_ADVERTISER_ID_COLLECTION</bool>
-        </config-file>
-        <!-- Used for cordova-android 7 -->
         <config-file target="app/src/main/res/values/facebookconnect.xml" parent="/*">
             <string name="fb_app_id">$APP_ID</string>
             <string name="fb_app_name">$APP_NAME</string>
