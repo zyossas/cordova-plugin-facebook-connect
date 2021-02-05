@@ -25,8 +25,6 @@ As the `APP_NAME` is used as a string in XML files, if your app name contains an
 
 If you need to change your `APP_ID` after installation, it's recommended that you remove and then re-add the plugin as above. Note that changes to the `APP_ID` value in your `config.xml` file will *not* be propagated to the individual platform builds.
 
-IMPORTANT: This plugin works as is with cordova-ios 5 but if you use earlier version of cordova-ios then you need to add the code in the following comment to your CordovaLib/Classes/Public/CDVAppDelegate.m file which was added to your project as part of the cordova-ios ios platform template: https://github.com/apache/cordova-ios/issues/476#issuecomment-460907247
-
 ### Installation Guides
 
 - [iOS Guide](docs/ios/README.md)
@@ -51,7 +49,7 @@ If you are looking to test the plugin, would like to reproduce a bug or build is
 
   * Cordova >= 5.0.0
   * cordova-android >= 7.0.0
-  * cordova-ios >= 3.8
+  * cordova-ios >= 5.0.0
   * cordova-browser >= 3.6
 
 ## Facebook SDK
