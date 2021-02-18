@@ -1,3 +1,10 @@
+<a name="1.2.1"></a>
+# [1.2.1](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.2.1) (2021-02-18)
+
+## Bug Fixes
+
+* Fixed an issue that caused the `setAdvertiserIDCollectionEnabled` method to be undefined (closes [#36](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/36))
+
 <a name="1.2.0"></a>
 # [1.2.0](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.2.0) (2021-02-05)
 
