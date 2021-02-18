@@ -1,3 +1,26 @@
+<a name="2.0.0"></a>
+# [2.0.0](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v2.0.0) (2021-02-19)
+
+## Breaking Changes
+
+* Removed the deprecated `browserInit` method on the browser platform (closes [#26](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/26))
+
+## Features
+
+* Updated the Facebook SDK to 9.0.0 for Android and 9.0.1 for iOS (closes [#15](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/15))
+* Dropped support for cordova-android 6 and below (closes [#23](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/23))
+* Dropped support for cordova-ios 4 and below (closes [#24](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/24))
+* Updated the `showDialog` method to remove the deprecated caption, description, and picture properties (closes [#28](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/28))
+
+## Bug Fixes
+
+* Updated the `getAccessToken` method to be consistent on all platforms and return the error message "Session not open." if the user has no current access token
+* Updated the `logout` method to be consistent on all platforms and call the success callback even if the user has no current access token (closes [#20](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/20))
+
+## Documentation
+
+* Updated README to remove outdated information that suggested that Facebook login used the native Facebook app ([#30](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/30))
+
 <a name="1.2.1"></a>
 # [1.2.1](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.2.1) (2021-02-18)
 
