@@ -20,6 +20,10 @@ exports.setAutoLogAppEventsEnabled = function (enabled, s, f) {
   exec(s, f, 'FacebookConnectPlugin', 'setAutoLogAppEventsEnabled', [enabled]);
 }
 
+exports.setAdvertiserIDCollectionEnabled = function (enabled, s, f) {
+  exec(s, f, 'FacebookConnectPlugin', 'setAdvertiserIDCollectionEnabled', [enabled]);
+}
+
 exports.logEvent = function logEvent (name, params, valueToSum, s, f) {
   // Prevent NSNulls getting into iOS, messes up our [command.argument count]
   if (!params && !valueToSum) {
