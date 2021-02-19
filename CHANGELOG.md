@@ -3,13 +3,13 @@
 
 ## Breaking Changes
 
-* Removed the deprecated `browserInit` method on the browser platform (closes [#26](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/26))
+* Removed the deprecated `browserInit` method on the browser platform; this method which was previously a no-op is no longer defined (closes [#26](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/26))
+* Dropped support for cordova-android 6 and below (closes [#23](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/23))
+* Dropped support for cordova-ios 4 and below (closes [#24](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/24))
 
 ## Features
 
 * Updated the Facebook SDK to 9.0.0 for Android and 9.0.1 for iOS (closes [#15](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/15))
-* Dropped support for cordova-android 6 and below (closes [#23](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/23))
-* Dropped support for cordova-ios 4 and below (closes [#24](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/24))
 * Updated the `login` method to remove unnecessary checks for read/publish permissions; the plugin will no longer prevent developers from requesting read and publish permissions at the same time, and will rely on the Facebook SDK's own internal logic instead [#34](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/pull/34)
 * Updated the `showDialog` method to remove the deprecated caption, description, and picture properties (closes [#28](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/28))
 
