@@ -55,8 +55,6 @@ import java.util.Set;
 public class ConnectPlugin extends CordovaPlugin {
 
     private static final int INVALID_ERROR_CODE = -2; //-1 is FacebookRequestError.INVALID_ERROR_CODE
-    private static final String PUBLISH_PERMISSION_PREFIX = "publish";
-    private static final String MANAGE_PERMISSION_PREFIX = "manage";
     @SuppressWarnings("serial")
     private static final Set<String> OTHER_PUBLISH_PERMISSIONS = new HashSet<String>() {
         {
@@ -472,8 +470,6 @@ public class ConnectPlugin extends CordovaPlugin {
             return;
         }
 
-        boolean publishPermissions = false;
-        boolean readPermissions = false;
         String declinedPermission = null;
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -490,17 +486,6 @@ public class ConnectPlugin extends CordovaPlugin {
                 declinedPermission = permission;
                 break;
             }
-
-            if (isPublishPermission(permission)) {
-                publishPermissions = true;
-            } else {
-                readPermissions = true;
-            }
-
-            // Break if we have a mixed bag, as this is an error
-            if (publishPermissions && readPermissions) {
-                break;
-            }
         }
 
         if (declinedPermission != null) {
@@ -508,21 +493,9 @@ public class ConnectPlugin extends CordovaPlugin {
 			return;
         }
 
-        if (publishPermissions && readPermissions) {
-            graphContext.error("Cannot ask for both read and publish permissions.");
-            return;
-        }
-
         cordova.setActivityResultCallback(this);
         LoginManager loginManager = LoginManager.getInstance();
-        // Check for write permissions, the default is read (empty)
-        if (publishPermissions) {
-            // Request new publish permissions
-            loginManager.logInWithPublishPermissions(cordova.getActivity(), permissions);
-        } else {
-            // Request new read permissions
-            loginManager.logInWithReadPermissions(cordova.getActivity(), permissions);
-        }
+        loginManager.logIn(cordova.getActivity(), permissions);
     }
 
     private void executeSetAutoLogAppEventsEnabled(JSONArray args, CallbackContext callbackContext) {
@@ -643,55 +616,9 @@ public class ConnectPlugin extends CordovaPlugin {
         pr.setKeepCallback(true);
         loginContext.sendPluginResult(pr);
 
-        // Check if the active session is open
-        if (!hasAccessToken()) {
-            // Set up the activity result callback to this class
-            cordova.setActivityResultCallback(this);
-
-            // Create the request
-            LoginManager.getInstance().logInWithReadPermissions(cordova.getActivity(), permissions);
-            return;
-        }
-
-        // Reauthorize flow
-        boolean publishPermissions = false;
-        boolean readPermissions = false;
-        // Figure out if this will be a read or publish reauthorize
-        if (permissions.size() == 0) {
-            // No permissions, read
-            readPermissions = true;
-        }
-
-        // Loop through the permissions to see what
-        // is being requested
-        for (String permission : permissions) {
-            if (isPublishPermission(permission)) {
-                publishPermissions = true;
-            } else {
-                readPermissions = true;
-            }
-            // Break if we have a mixed bag, as this is an error
-            if (publishPermissions && readPermissions) {
-                break;
-            }
-        }
-
-        if (publishPermissions && readPermissions) {
-            loginContext.error("Cannot ask for both read and publish permissions.");
-            loginContext = null;
-            return;
-        }
-
         // Set up the activity result callback to this class
         cordova.setActivityResultCallback(this);
-        // Check for write permissions, the default is read (empty)
-        if (publishPermissions) {
-            // Request new publish permissions
-            LoginManager.getInstance().logInWithPublishPermissions(cordova.getActivity(), permissions);
-        } else {
-            // Request new read permissions
-            LoginManager.getInstance().logInWithReadPermissions(cordova.getActivity(), permissions);
-        }
+        LoginManager.getInstance().logIn(cordova.getActivity(), permissions);
     }
 
     private void executeCheckHasCorrectPermissions(JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -820,16 +747,6 @@ public class ConnectPlugin extends CordovaPlugin {
 
         graphRequest.setParameters(params);
         graphRequest.executeAsync();
-    }
-
-    /*
-     * Checks for publish permissions
-     */
-    private boolean isPublishPermission(String permission) {
-        return permission != null &&
-                (permission.startsWith(PUBLISH_PERMISSION_PREFIX) ||
-                permission.startsWith(MANAGE_PERMISSION_PREFIX) ||
-                OTHER_PUBLISH_PERMISSIONS.contains(permission));
     }
 
     /**
