@@ -22,8 +22,6 @@
 
 - (NSDictionary *)responseObject;
 - (NSDictionary*)parseURLParams:(NSString *)query;
-- (BOOL)isPublishPermission:(NSString*)permission;
-- (BOOL)areAllPermissionsReadPermissions:(NSArray*)permissions;
 - (void)enableHybridAppEvents;
 @end
 
@@ -204,16 +202,8 @@
 
     // Check if the session is open or not
     if ([FBSDKAccessToken currentAccessToken] == nil) {
-        // Initial log in, can only ask to read
-        // type permissions
         if (permissions == nil) {
             permissions = @[];
-        }
-        if (! [self areAllPermissionsReadPermissions:permissions]) {
-            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR
-                                             messageAsString:@"You can only ask for read permissions initially"];
-            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
-            return;
         }
 
         if (self.loginManager == nil) {
@@ -510,35 +500,11 @@
 #pragma mark - Utility methods
 
 - (void) loginWithPermissions:(NSArray *)permissions withHandler:(FBSDKLoginManagerLoginResultBlock) handler {
-    BOOL publishPermissionFound = NO;
-    BOOL readPermissionFound = NO;
     if (self.loginManager == nil) {
         self.loginManager = [[FBSDKLoginManager alloc] init];
     }
 
-    for (NSString *p in permissions) {
-        if ([self isPublishPermission:p]) {
-            publishPermissionFound = YES;
-        } else {
-            readPermissionFound = YES;
-        }
-
-        // If we've found one of each we can stop looking.
-        if (publishPermissionFound && readPermissionFound) {
-            break;
-        }
-    }
-
-    if (publishPermissionFound && readPermissionFound) {
-        // Mix of permissions, not allowed
-        NSDictionary *userInfo = @{
-            FBSDKErrorLocalizedDescriptionKey: @"Cannot ask for both read and publish permissions.",
-        };
-        NSError *error = [NSError errorWithDomain:@"facebook" code:-1 userInfo:userInfo];
-        handler(nil, error);
-    } else {
-        [self.loginManager logInWithPermissions:permissions fromViewController:[self topMostController] handler:handler];
-    }
+    [self.loginManager logInWithPermissions:permissions fromViewController:[self topMostController] handler:handler];
 }
 
 - (UIViewController*) topMostController {
@@ -625,29 +591,6 @@
     return params;
 }
 
-
-/*
- * Check if a permision is a read permission.
- */
-- (BOOL)isPublishPermission:(NSString*)permission {
-    return [permission hasPrefix:@"publish"] ||
-    [permission hasPrefix:@"manage"] ||
-    [permission isEqualToString:@"ads_management"] ||
-    [permission isEqualToString:@"create_event"] ||
-    [permission isEqualToString:@"rsvp_event"];
-}
-
-/*
- * Check if all permissions are read permissions.
- */
-- (BOOL)areAllPermissionsReadPermissions:(NSArray*)permissions {
-    for (NSString *permission in permissions) {
-        if ([self isPublishPermission:permission]) {
-            return NO;
-        }
-    }
-    return YES;
-}
 
 /*
  * Enable the hybrid app events for the webview.
