@@ -10,6 +10,7 @@
 * Updated the Facebook SDK to 9.0.0 for Android and 9.0.1 for iOS (closes [#15](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/15))
 * Dropped support for cordova-android 6 and below (closes [#23](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/23))
 * Dropped support for cordova-ios 4 and below (closes [#24](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/24))
+* Updated the `login` method to remove unnecessary checks for read/publish permissions; the plugin will no longer prevent developers from requesting read and publish permissions at the same time, and will rely on the Facebook SDK's own internal logic instead [#34](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/pull/34)
 * Updated the `showDialog` method to remove the deprecated caption, description, and picture properties (closes [#28](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/28))
 
 ## Bug Fixes
@@ -19,7 +20,7 @@
 
 ## Documentation
 
-* Updated README to remove outdated information that suggested that Facebook login used the native Facebook app ([#30](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/30))
+* Updated README to remove outdated information that suggested that Facebook login uses the native Facebook app, which is no longer true on iOS ([#30](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/30))
 
 <a name="1.2.1"></a>
 # [1.2.1](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v1.2.1) (2021-02-18)
