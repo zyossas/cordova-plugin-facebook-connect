@@ -1,5 +1,5 @@
 <a name="2.0.0"></a>
-# [2.0.0](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v2.0.0) (2021-02-19)
+# [2.0.0](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/releases/tag/v2.0.0) (2021-02-25)
 
 ## Breaking Changes
 
@@ -12,6 +12,7 @@
 * Updated the Facebook SDK to 9.0.0 for Android and 9.0.1 for iOS (closes [#15](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/15))
 * Updated the `login` method to remove unnecessary checks for read/publish permissions; the plugin will no longer prevent developers from requesting read and publish permissions at the same time, and will rely on the Facebook SDK's own internal logic instead [#34](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/pull/34)
 * Updated the `showDialog` method to remove the deprecated caption, description, and picture properties (closes [#28](https://github.com/cordova-plugin-facebook-connect/cordova-plugin-facebook-connect/issues/28))
+* Added a new `setAdvertiserTrackingEnabled` method to allow for enabling advertiser tracking on iOS 14+
 
 ## Bug Fixes
 

@@ -356,6 +356,20 @@ facebookConnectPlugin.setAdvertiserIDCollectionEnabled(true, function() {
 });
 ```
 
+## Advertiser Tracking Enabled (iOS Only)
+
+To enable advertiser tracking, call the `setAdvertiserTrackingEnabled` method.
+
+```js
+facebookConnectPlugin.setAdvertiserTrackingEnabled(true, function() {
+  console.log('setAdvertiserTrackingEnabled success');
+}, function() {
+  console.error('setAdvertiserTrackingEnabled failure');
+});
+```
+
+See the [Facebook Developer documentation](https://developers.facebook.com/docs/app-events/guides/advertising-tracking-enabled/) for more details.
+
 ## URL Suffixes for Multiple Apps
 
 When using the same Facebook app with multiple iOS apps, use the *FACEBOOK_URL_SCHEME_SUFFIX* variable to set a unique URL Suffix for each app. This ensures that Facebook redirects back to the correct app after closing the login window.
