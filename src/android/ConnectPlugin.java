@@ -55,8 +55,6 @@ import java.util.Set;
 public class ConnectPlugin extends CordovaPlugin {
 
     private static final int INVALID_ERROR_CODE = -2; //-1 is FacebookRequestError.INVALID_ERROR_CODE
-    private static final String PUBLISH_PERMISSION_PREFIX = "publish";
-    private static final String MANAGE_PERMISSION_PREFIX = "manage";
     @SuppressWarnings("serial")
     private static final Set<String> OTHER_PUBLISH_PERMISSIONS = new HashSet<String>() {
         {
@@ -255,10 +253,8 @@ public class ConnectPlugin extends CordovaPlugin {
         } else if (action.equals("logout")) {
             if (hasAccessToken()) {
                 LoginManager.getInstance().logOut();
-                callbackContext.success();
-            } else {
-                callbackContext.error("No valid session found, must call init and login before logout.");
             }
+            callbackContext.success();
             return true;
 
         } else if (action.equals("getLoginStatus")) {
@@ -439,12 +435,6 @@ public class ConnectPlugin extends CordovaPlugin {
             ShareLinkContent.Builder builder = new ShareLinkContent.Builder();
             if(params.containsKey("link"))
                 builder.setContentUrl(Uri.parse(params.get("link")));
-            if(params.containsKey("caption"))
-                builder.setContentTitle(params.get("caption"));
-            if(params.containsKey("picture"))
-                builder.setImageUrl(Uri.parse(params.get("picture")));
-            if(params.containsKey("description"))
-                builder.setContentDescription(params.get("description"));
 
             messageDialog.show(builder.build());
 
@@ -480,8 +470,6 @@ public class ConnectPlugin extends CordovaPlugin {
             return;
         }
 
-        boolean publishPermissions = false;
-        boolean readPermissions = false;
         String declinedPermission = null;
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -498,17 +486,6 @@ public class ConnectPlugin extends CordovaPlugin {
                 declinedPermission = permission;
                 break;
             }
-
-            if (isPublishPermission(permission)) {
-                publishPermissions = true;
-            } else {
-                readPermissions = true;
-            }
-
-            // Break if we have a mixed bag, as this is an error
-            if (publishPermissions && readPermissions) {
-                break;
-            }
         }
 
         if (declinedPermission != null) {
@@ -516,21 +493,9 @@ public class ConnectPlugin extends CordovaPlugin {
 			return;
         }
 
-        if (publishPermissions && readPermissions) {
-            graphContext.error("Cannot ask for both read and publish permissions.");
-            return;
-        }
-
         cordova.setActivityResultCallback(this);
         LoginManager loginManager = LoginManager.getInstance();
-        // Check for write permissions, the default is read (empty)
-        if (publishPermissions) {
-            // Request new publish permissions
-            loginManager.logInWithPublishPermissions(cordova.getActivity(), permissions);
-        } else {
-            // Request new read permissions
-            loginManager.logInWithReadPermissions(cordova.getActivity(), permissions);
-        }
+        loginManager.logIn(cordova.getActivity(), permissions);
     }
 
     private void executeSetAutoLogAppEventsEnabled(JSONArray args, CallbackContext callbackContext) {
@@ -651,55 +616,9 @@ public class ConnectPlugin extends CordovaPlugin {
         pr.setKeepCallback(true);
         loginContext.sendPluginResult(pr);
 
-        // Check if the active session is open
-        if (!hasAccessToken()) {
-            // Set up the activity result callback to this class
-            cordova.setActivityResultCallback(this);
-
-            // Create the request
-            LoginManager.getInstance().logInWithReadPermissions(cordova.getActivity(), permissions);
-            return;
-        }
-
-        // Reauthorize flow
-        boolean publishPermissions = false;
-        boolean readPermissions = false;
-        // Figure out if this will be a read or publish reauthorize
-        if (permissions.size() == 0) {
-            // No permissions, read
-            readPermissions = true;
-        }
-
-        // Loop through the permissions to see what
-        // is being requested
-        for (String permission : permissions) {
-            if (isPublishPermission(permission)) {
-                publishPermissions = true;
-            } else {
-                readPermissions = true;
-            }
-            // Break if we have a mixed bag, as this is an error
-            if (publishPermissions && readPermissions) {
-                break;
-            }
-        }
-
-        if (publishPermissions && readPermissions) {
-            loginContext.error("Cannot ask for both read and publish permissions.");
-            loginContext = null;
-            return;
-        }
-
         // Set up the activity result callback to this class
         cordova.setActivityResultCallback(this);
-        // Check for write permissions, the default is read (empty)
-        if (publishPermissions) {
-            // Request new publish permissions
-            LoginManager.getInstance().logInWithPublishPermissions(cordova.getActivity(), permissions);
-        } else {
-            // Request new read permissions
-            LoginManager.getInstance().logInWithReadPermissions(cordova.getActivity(), permissions);
-        }
+        LoginManager.getInstance().logIn(cordova.getActivity(), permissions);
     }
 
     private void executeCheckHasCorrectPermissions(JSONArray args, CallbackContext callbackContext) throws JSONException {
@@ -741,14 +660,8 @@ public class ConnectPlugin extends CordovaPlugin {
         ShareLinkContent.Builder builder = new ShareLinkContent.Builder();
         if (paramBundle.containsKey("href"))
             builder.setContentUrl(Uri.parse(paramBundle.get("href")));
-        if (paramBundle.containsKey("caption"))
-            builder.setContentTitle(paramBundle.get("caption"));
-        if (paramBundle.containsKey("description"))
-            builder.setContentDescription(paramBundle.get("description"));
         if (paramBundle.containsKey("link"))
             builder.setContentUrl(Uri.parse(paramBundle.get("link")));
-        if (paramBundle.containsKey("picture"))
-            builder.setImageUrl(Uri.parse(paramBundle.get("picture")));
         if (paramBundle.containsKey("quote"))
             builder.setQuote(paramBundle.get("quote"));
         if (paramBundle.containsKey("hashtag"))
@@ -834,16 +747,6 @@ public class ConnectPlugin extends CordovaPlugin {
 
         graphRequest.setParameters(params);
         graphRequest.executeAsync();
-    }
-
-    /*
-     * Checks for publish permissions
-     */
-    private boolean isPublishPermission(String permission) {
-        return permission != null &&
-                (permission.startsWith(PUBLISH_PERMISSION_PREFIX) ||
-                permission.startsWith(MANAGE_PERMISSION_PREFIX) ||
-                OTHER_PUBLISH_PERMISSIONS.contains(permission));
     }
 
     /**
@@ -932,55 +835,5 @@ public class ConnectPlugin extends CordovaPlugin {
             e.printStackTrace();
         }
         return new JSONObject();
-    }
-
-    /**
-     * Wraps the given object if necessary.
-     *
-     * If the object is null or , returns {@link #JSONObject.NULL}.
-     * If the object is a {@code JSONArray} or {@code JSONObject}, no wrapping is necessary.
-     * If the object is {@code JSONObject.NULL}, no wrapping is necessary.
-     * If the object is an array or {@code Collection}, returns an equivalent {@code JSONArray}.
-     * If the object is a {@code Map}, returns an equivalent {@code JSONObject}.
-     * If the object is a primitive wrapper type or {@code String}, returns the object.
-     * Otherwise if the object is from a {@code java} package, returns the result of {@code toString}.
-     * If wrapping fails, returns null.
-     */
-    private static Object wrapObject(Object o) {
-        if (o == null) {
-            return JSONObject.NULL;
-        }
-        if (o instanceof JSONArray || o instanceof JSONObject) {
-            return o;
-        }
-        if (o.equals(JSONObject.NULL)) {
-            return o;
-        }
-        try {
-            if (o instanceof Collection) {
-                return new JSONArray((Collection) o);
-            } else if (o.getClass().isArray()) {
-                return new JSONArray(o);
-            }
-            if (o instanceof Map) {
-                return new JSONObject((Map) o);
-            }
-            if (o instanceof Boolean ||
-                o instanceof Byte ||
-                o instanceof Character ||
-                o instanceof Double ||
-                o instanceof Float ||
-                o instanceof Integer ||
-                o instanceof Long ||
-                o instanceof Short ||
-                o instanceof String) {
-                return o;
-            }
-            if (o.getClass().getPackage().getName().startsWith("java.")) {
-                return o.toString();
-            }
-        } catch (Exception ignored) {
-        }
-        return null;
     }
 }

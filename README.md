@@ -25,8 +25,6 @@ As the `APP_NAME` is used as a string in XML files, if your app name contains an
 
 If you need to change your `APP_ID` after installation, it's recommended that you remove and then re-add the plugin as above. Note that changes to the `APP_ID` value in your `config.xml` file will *not* be propagated to the individual platform builds.
 
-IMPORTANT: This plugin works as is with cordova-ios 5 but if you use earlier version of cordova-ios then you need to add the code in the following comment to your CordovaLib/Classes/Public/CDVAppDelegate.m file which was added to your project as part of the cordova-ios ios platform template: https://github.com/apache/cordova-ios/issues/476#issuecomment-460907247
-
 ### Installation Guides
 
 - [iOS Guide](docs/ios/README.md)
@@ -41,7 +39,7 @@ IMPORTANT: This plugin works as is with cordova-ios 5 but if you use earlier ver
 
 This is a fork of the [official plugin for Facebook](https://github.com/Wizcorp/phonegap-facebook-plugin/) in Apache Cordova that implements the latest Facebook SDK. Unless noted, this is a drop-in replacement. You don't have to replace your client code.
 
-The Facebook plugin for [Apache Cordova](http://cordova.apache.org/) allows you to use the same JavaScript code in your Cordova application as you use in your web application. However, unlike in the browser, the Cordova application will use the native Facebook app to perform Single Sign On for the user.  If this is not possible then the sign on will degrade gracefully using the standard dialog based authentication.
+The Facebook plugin for [Apache Cordova](http://cordova.apache.org/) allows you to use the same JavaScript code in your Cordova application as you use in your web application.
 
 ## Sample Repo
 
@@ -50,8 +48,8 @@ If you are looking to test the plugin, would like to reproduce a bug or build is
 ## Compatibility
 
   * Cordova >= 5.0.0
-  * cordova-android >= 4.0
-  * cordova-ios >= 3.8
+  * cordova-android >= 7.0.0
+  * cordova-ios >= 5.0.0
   * cordova-browser >= 3.6
 
 ## Facebook SDK
@@ -60,9 +58,7 @@ This plugin use the SDKs provided by Facebook. More information about these in t
 
 ### Facebook SDK version
 
-As of v3.0.0, this plugin will always be released for iOS and for Android with a synchronized usage of the Facebook SDKs
-
-For example: v3.0.0 include the Facebook SDK iOS v4.36.0 and reference per default the Facebook SDK Android v4.36.0 too
+This plugin will always be released for iOS and for Android with a synchronized usage of the Facebook SDKs.
 
 ### Graph API version
 
@@ -132,9 +128,6 @@ Share Dialog:
 	{
 		method: "share",
 		href: "http://example.com",
-		caption: "Such caption, very feed.",
-		description: "Much description",
-		picture: 'http://example.com/image.png',
 		hashtag: '#myHashtag',
 		share_feedWeb: true, // iOS only
 	}
@@ -142,8 +135,6 @@ Share Dialog:
 #### iOS
 
 The default dialog mode is [`FBSDKShareDialogModeAutomatic`](https://developers.facebook.com/docs/reference/ios/current/constants/FBSDKShareDialogMode/). You can share that by adding a specific dialog mode parameter. The available share dialog modes are: `share_sheet`, `share_feedBrowser`, `share_native` and `share_feedWeb`. [Read more about share dialog modes](https://developers.facebook.com/docs/reference/ios/current/constants/FBSDKShareDialogMode/)
-
-`caption`, `description` and `picture` were deprecated in Facebok API [v2.9](https://developers.facebook.com/docs/graph-api/changelog/version2.9#gapi-deprecate) and therefore not supported anymore on iOS 
 
 Game request:
 
@@ -161,10 +152,7 @@ Send Dialog:
 
 	{
 		method: "send",
-		caption: "Check this out.",
-		link: "http://example.com",
-		description: "The site I told you about",
-		picture: "http://example.com/image.png"
+		link: "http://example.com"
 	}
 
 
@@ -306,11 +294,8 @@ Send a photo to a user's feed
 ```js
 facebookConnectPlugin.showDialog({
     method: "share",
-    picture:'https://www.google.co.jp/logos/doodles/2014/doodle-4-google-2014-japan-winner-5109465267306496.2-hp.png',
     name:'Test Post',
-    message:'First photo post',
-    caption: 'Testing using Cordova plugin',
-    description: 'Posting photo using Cordova Facebook plugin'
+    message:'First photo post'
   }, function (response) {
     console.log(response)
   }, function (response) {
@@ -370,6 +355,20 @@ facebookConnectPlugin.setAdvertiserIDCollectionEnabled(true, function() {
   console.error('setAdvertiserIDCollectionEnabled failure');
 });
 ```
+
+## Advertiser Tracking Enabled (iOS Only)
+
+To enable advertiser tracking, call the `setAdvertiserTrackingEnabled` method.
+
+```js
+facebookConnectPlugin.setAdvertiserTrackingEnabled(true, function() {
+  console.log('setAdvertiserTrackingEnabled success');
+}, function() {
+  console.error('setAdvertiserTrackingEnabled failure');
+});
+```
+
+See the [Facebook Developer documentation](https://developers.facebook.com/docs/app-events/guides/advertising-tracking-enabled/) for more details.
 
 ## URL Suffixes for Multiple Apps
 
