@@ -91,7 +91,8 @@ public class ConnectPlugin extends CordovaPlugin {
 
         // Set up the activity result callback to this class
         cordova.setActivityResultCallback(this);
-
+	LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_ONLY);
+	    
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(final LoginResult loginResult) {
