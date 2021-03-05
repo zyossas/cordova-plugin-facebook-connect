@@ -250,6 +250,14 @@ public class ConnectPlugin extends CordovaPlugin {
             executeCheckHasCorrectPermissions(args, callbackContext);
             return true;
 
+        } else if (action.equals("isDataAccessExpired")) {
+            if (hasAccessToken()) {
+                callbackContext.success(AccessToken.getCurrentAccessToken().isDataAccessExpired() ? "true" : "false");
+            } else {
+                callbackContext.error("Session not open.");
+            }
+            return true;
+
         } else if (action.equals("logout")) {
             if (hasAccessToken()) {
                 LoginManager.getInstance().logOut();

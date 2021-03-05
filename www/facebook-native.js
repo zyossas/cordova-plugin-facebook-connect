@@ -16,6 +16,10 @@ exports.checkHasCorrectPermissions = function checkHasCorrectPermissions (permis
   exec(s, f, 'FacebookConnectPlugin', 'checkHasCorrectPermissions', permissions)
 }
 
+exports.isDataAccessExpired = function isDataAccessExpired (s, f) {
+  exec(s, f, 'FacebookConnectPlugin', 'isDataAccessExpired', [])
+}
+
 exports.setAutoLogAppEventsEnabled = function (enabled, s, f) {
   exec(s, f, 'FacebookConnectPlugin', 'setAutoLogAppEventsEnabled', [enabled]);
 }

@@ -118,6 +118,14 @@ Success function returns an Object like:
 ```
 For more information see: [Facebook Documentation](https://developers.facebook.com/docs/reference/javascript/FB.getLoginStatus)
 
+### Check if data access is expired
+
+`facebookConnectPlugin.isDataAccessExpired(Function success, Function failure)`
+
+Success function returns a String indicating if data access is expired.
+
+Failure function returns an error String.
+
 ### Show a Dialog
 
 `facebookConnectPlugin.showDialog(Object options, Function success, Function failure)`

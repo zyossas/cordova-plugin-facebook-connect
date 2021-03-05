@@ -261,6 +261,18 @@
     return;
 }
 
+- (void) isDataAccessExpired:(CDVInvokedUrlCommand *)command {
+    CDVPluginResult *pluginResult;
+    if ([FBSDKAccessToken currentAccessToken]) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:
+                        [FBSDKAccessToken currentAccessToken].dataAccessExpired ? @"true" : @"false"];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:
+                        @"Session not open."];
+    }
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 - (void) logout:(CDVInvokedUrlCommand*)command
 {
     if ([FBSDKAccessToken currentAccessToken]) {

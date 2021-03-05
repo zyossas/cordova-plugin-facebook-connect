@@ -125,6 +125,28 @@ exports.checkHasCorrectPermissions = function checkHasCorrectPermissions (permis
   }
 }
 
+exports.isDataAccessExpired = function isDataAccessExpired (s, f) {
+  if (!__fbSdkReady) {
+    return __fbCallbacks.push(function() {
+      isDataAccessExpired(s, f);
+    });
+  }
+
+  var accessToken = FB.getAccessToken()
+  if (accessToken) {
+    FB.getLoginStatus(function (response) {
+      if(!response.authResponse || !response.authResponse.data_access_expiration_time) {
+        if(f) f('Data access expiration time not available.');
+      } else {
+        var isExpired = response.authResponse.data_access_expiration_time < new Date().getTime() / 1000;
+        if(s) s(isExpired ? 'true' : 'false');
+      }
+    })
+  } else {
+    if(f) f('Session not open.');
+  }
+}
+
 exports.getAccessToken = function getAccessToken (s, f) {
   var response = FB.getAccessToken()
   if (response) {
